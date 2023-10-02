@@ -63,9 +63,9 @@ void ClearArea(int anX, int anY, int aXLength, int aYLength)
 
 void ClearGame()
 {
-	for (int y = 1; y < MenuOptions::screenSeperatorY - 1; y++)
+	for (int y = 1; y < MenuOptions::ScreenSeperatorY; y++)
 	{
-		for (int x = 1; x < MenuOptions::frameSizeEndX - 1; x++)
+		for (int x = 1; x < MenuOptions::FrameSizeEndX - 1; x++)
 		{
 			SetCursorPosition(x, y);
 			std::cout << " ";
@@ -76,9 +76,9 @@ void ClearGame()
 
 void ClearMenu()
 {
-	for (int y = MenuOptions::screenSeperatorY + 1; y < MenuOptions::frameSizeEndY - 1; y++)
+	for (int y = MenuOptions::ScreenSeperatorY + 1; y < MenuOptions::FrameSizeEndY - 1; y++)
 	{
-		for (int x = 1; x < MenuOptions::frameSizeEndX - 1; x++)
+		for (int x = 1; x < MenuOptions::StatsSeperatorX - 1; x++)
 		{
 			SetCursorPosition(x, y);
 			std::cout << " ";
@@ -129,7 +129,7 @@ void SetCursorPosition(int aX, int aY)
 
 int DamageAdjustment(int setDamage)
 {
-	 return setDamage * RandomFloatNumber(0.8, 1.2) + 0.5;
+	 return static_cast<int>(setDamage * RandomFloatNumber(0.8, 1.2) + 0.5);
 }
 
 double RandomFloatNumber(double min, double max)
@@ -207,3 +207,11 @@ int ButtonPress()
     }
 }
 
+void FlipCursorVisibility(bool aSetCursor)
+{
+	CONSOLE_CURSOR_INFO cursorInfo;
+	cursorInfo.dwSize = 100;
+	cursorInfo.bVisible = aSetCursor;
+
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+}

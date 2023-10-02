@@ -2,44 +2,48 @@
 #include "Quick functions.h"
 #include <Windows.h>
 #include "Enemy.h"
+#include "Door.h"
+#include "Room.h"
 #include "Enums.h"
 
 
-void UI::DrawFrame()
+void DrawFrame()
 {
 	SetCursorPosition(0, 0);
-	for (int y = 0; y < MenuOptions::frameSizeEndY; y++)
+	for (int y = 0; y < MenuOptions::FrameSizeEndY; y++)
 	{
-		for (int x = 0; x < MenuOptions::frameSizeEndX; x++)
+		for (int x = 0; x < MenuOptions::FrameSizeEndX; x++)
 		{
-			if (y == MenuOptions::frameSizeStartY || y == MenuOptions::frameSizeEndY - 1 || y == MenuOptions::screenSeperatorY)
+			if (y == MenuOptions::FrameSizeStartY || y == MenuOptions::FrameSizeEndY - 1 || y == MenuOptions::ScreenSeperatorY)
 			{
 				SetCursorPosition(x, y);
 				std::cout << "-";
 			}
-			else if (x == MenuOptions::frameSizeStartX || x == MenuOptions::frameSizeEndX - 1)
+			else if (x == MenuOptions::FrameSizeStartX || x == MenuOptions::FrameSizeEndX - 1)
 			{
 				SetCursorPosition(x, y);
 				std::cout << "|";
+			}
+			else if (x == MenuOptions::StatsSeperatorX && y > MenuOptions::ScreenSeperatorY && y < MenuOptions::FrameSizeEndY)
+			{
+				SetCursorPosition(x, y);
+				std::cout << "|";
+
 			}
 		}
 	}
 	std::cout << std::endl;
 }
 
-
-void UI::MenuControll(std::string aMenuList[], int aMenuSize, int aPlayerChoiseInMenu, int aStartingYPosision)
+void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMenu, int aStartingYPosision)
 {
-	for (int i = 0; i < aMenuSize; ++i)
+	while (true)
 	{
-		if (i == aPlayerChoiseInMenu)
+		ClearMenu();
+		SetCursorPosition(MenuOptions::menyStartX, MenuOptions::menyStartY);
+		for (int i = 0; i < aMenuSize; ++i)
 		{
-			SetColor(ColorInt::GreenColorText);
-			std::cout << "\t" << aMenuList[i] << "\t <---" << std::endl;
-		}
-		else
-		{
-			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); 
+			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 			CONSOLE_SCREEN_BUFFER_INFO csbi;
 
 			if (GetConsoleScreenBufferInfo(hConsole, &csbi))
@@ -49,14 +53,55 @@ void UI::MenuControll(std::string aMenuList[], int aMenuSize, int aPlayerChoiseI
 				int y = cursorPosition.Y;
 				SetCursorPosition(x, y);
 			}
-			SetColor(ColorInt::WhiteColorText);
-			std::cout << aMenuList[i] << std::endl;
+			if (i == aPlayerChoiseInMenu)
+			{
+				SetColor(ColorInt::GreenColorText);
+				std::cout << "\t" << aMenuList[i] << "\t <---" << std::endl;
+			}
+			else
+			{
+				
+				SetColor(ColorInt::WhiteColorText);
+				std::cout << aMenuList[i] << std::endl;
+			}
+		}
+		SetColor(ColorInt::WhiteColorText);
+		switch (ButtonPress())
+		{
+		case MenuOptions::MenuListUp:
+		{
+			if (aPlayerChoiseInMenu > 0)
+			{
+				aPlayerChoiseInMenu--;
+			}
+			else
+			{
+				aPlayerChoiseInMenu = aMenuSize - 1;
+			}
+			break;
+		}
+		case MenuOptions::MenuListDown:
+		{
+			if (aPlayerChoiseInMenu < aMenuSize - 1)
+			{
+				aPlayerChoiseInMenu++;
+			}
+			else
+			{
+				aPlayerChoiseInMenu = 0;
+			}
+			break;
+		}
+		case MenuOptions::MenuListOption:
+		{
+			return;
+			break;
+		}
 		}
 	}
-	SetColor(ColorInt::WhiteColorText);
 }
 
-void UI::ShowEnemy(std::vector<Enemy>& aList)
+void ShowEnemy(std::vector<Enemy>& aList)
 {
 	ClearGame();
 	int ofSetX = 3;
@@ -75,24 +120,24 @@ void UI::ShowEnemy(std::vector<Enemy>& aList)
 	}
 }
 
-int UI::ChoseEnemy(std::vector<Enemy>& aList)
+int ChoseEnemy(std::vector<Enemy>& aList)
 {
 	bool missingTarget = true;
 	int playerChoise = 0;
 	while (true)
 	{
-	
 		int ofSetX = 3;
+		ClearArea(MenuOptions::gameStartX + ofSetX, MenuOptions::gameStartY, FrameSizeEndX - ofSetX);
 		for (int i = 0; i < aList.size(); i++)
 		{
 			if (i == playerChoise)
 			{
-				aList[i].ShowTarget(gameStartX + ofSetX, gameStartY + 2, true);
+				aList[i].ShowTarget(MenuOptions::gameStartX + ofSetX, MenuOptions::gameStartY + 2, true);
 			
 			}
 			else
 			{
-				aList[i].ShowTarget(gameStartX + ofSetX, gameStartY + 2, false);
+				aList[i].ShowTarget(MenuOptions::gameStartX + ofSetX, MenuOptions::gameStartY + 2, false);
 			}	
 			ofSetX += aList[i].GetSpriteSizeX() + 10;
 			
@@ -145,5 +190,149 @@ int UI::ChoseEnemy(std::vector<Enemy>& aList)
 		}
 		}
 	}
+}
 
+int ShowDoors(std::vector<Door>& aVectorOfDoors, std::vector<Room>& aVectorOfRooms, int aCurrentRoom)
+{
+	int playerChoise = 0;
+
+	while (true)
+	{
+		int extraSpace = 0;
+		ClearGame();
+
+		for (int i = 0; i < aVectorOfDoors.size(); i++)
+		{
+			if (i == playerChoise)
+			{
+				PrintDoorSprite(MenuOptions::gameStartX + ExtraInts::OfSet + (DoorBase::doorSpriteSizeX * i) + extraSpace, MenuOptions::gameStartY,
+					true, aVectorOfRooms[aVectorOfDoors[i].GetConnectingRoom(aCurrentRoom)].GetRoomExplored(), aVectorOfRooms[aVectorOfDoors[i].GetConnectingRoom(aCurrentRoom)].GetRoomName());
+				extraSpace += 3;
+			}
+			else
+			{
+				PrintDoorSprite(MenuOptions::gameStartX + ExtraInts::OfSet + (DoorBase::doorSpriteSizeX * i) + extraSpace, MenuOptions::gameStartY, 
+					false, aVectorOfRooms[aVectorOfDoors[i].GetConnectingRoom(aCurrentRoom)].GetRoomExplored(), aVectorOfRooms[aVectorOfDoors[i].GetConnectingRoom(aCurrentRoom)].GetRoomName());
+				extraSpace += 3;
+			}
+		}
+
+		switch (ButtonPress())
+		{
+			case MenuOptions::MenuListLeft:
+			{
+				if (playerChoise > 0)
+				{
+					playerChoise--;
+				}
+				else
+				{
+					playerChoise = aVectorOfDoors.size() - 1;
+				}
+				break;
+			}
+			case MenuOptions::MenuListRight:
+			{
+				if (playerChoise < aVectorOfDoors.size() - 1)
+				{
+					playerChoise++;
+				}
+				else
+				{
+					playerChoise = 0;
+				}
+				break;
+			}
+			case MenuOptions::MenuListOption:
+			{
+				return playerChoise;
+				break;
+			}
+		}
+	}
+}
+
+void PrintDoorSprite(int aStartX, int aStartY, bool aTarget, bool aRoomExplored, std::string aRoomName)
+{
+	if (aRoomExplored == false)
+	{
+		SetCursorPosition(aStartX, aStartY);
+		std::cout << "     ______     " << std::endl;
+		SetCursorPosition(aStartX, aStartY + 1);
+		std::cout << "  ,-' ;  ! `-.  " << std::endl;
+		SetCursorPosition(aStartX, aStartY + 2);
+		std::cout << " / :  !  :  . \\ " << std::endl;
+		SetCursorPosition(aStartX, aStartY + 3);
+		std::cout << "|_ ;   __:  ;  |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 4);
+		std::cout << ")| .  :)(.  !  |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 5);
+		std::cout << "|     (##)  _  |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 6);
+		std::cout << "|  :  ;`'  (_) (" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 7);
+		std::cout << "|  :  :  .     |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 8);
+		std::cout << ")_ !  ,  ;  ;  |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 9);
+		std::cout << "|| .  .  :  :  |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 10);
+		std::cout << "|  .  |  :  .  |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 11);
+		std::cout << "|___.------.___|" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 13);
+		std::cout << "      ???       " << std::endl;
+	}
+	else if (aRoomExplored == true)
+	{
+		SetCursorPosition(aStartX, aStartY);
+		std::cout << "     ______     " << std::endl;
+		SetCursorPosition(aStartX, aStartY + 1);
+		std::cout << "  ,-'      `-.  " << std::endl;
+		SetCursorPosition(aStartX, aStartY + 2);
+		std::cout << " /            \\ " << std::endl;
+		SetCursorPosition(aStartX, aStartY + 3);
+		std::cout << "|              |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 4);
+		std::cout << "|              |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 5);
+		std::cout << "|              |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 6);
+		std::cout << "|              |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 7);
+		std::cout << "|              |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 8);
+		std::cout << "|              |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 9);
+		std::cout << "|              |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 10);
+		std::cout << "|              |" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 11);
+		std::cout << "|______________|" << std::endl;
+		SetCursorPosition(aStartX, aStartY + 13);
+		std::cout <<"   " << aRoomName << std::endl;
+	}
+
+	if (aTarget)
+	{
+		SetCursorPosition(aStartX, aStartY + 15);
+		SetColor(ColorInt::RedColorText);
+		for (int j = 0; j < DoorBase::doorSpriteSizeX; j++)
+		{
+			if (j == 0 || j == DoorBase::doorSpriteSizeX - 1)
+			{
+				std::cout << "-";
+			}
+			else
+			{
+				std::cout << "=";
+			}
+		}
+		SetColor(ColorInt::WhiteColorText);
+	}
+	else
+	{
+		ClearArea(aStartX, aStartY + 15, DoorBase::doorSpriteSizeX);
+
+	}
 }

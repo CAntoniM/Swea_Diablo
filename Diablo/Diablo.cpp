@@ -3,60 +3,58 @@
 #include <vector>
 #include "Player.h"
 #include "Enemy.h"
+#include "Room.h"
+#include "Door.h"
 #include "Quick functions.h"
 #include "UI.h"
 
-bool LivingEnemies(std::vector<Enemy>& enemyList)
+void AddDoor(int aConnectingRoomOne, int aConnectingRoomTwo, std::vector<Door>& aListOfDoors)
 {
-	bool livingEnemie = false;
-	for (int i = 0; i < enemyList.size(); i++)
-	{
-		if (enemyList[i].GetIsAlive() == true)
-		{
-			livingEnemie = true;
-		}
-	}
-	return livingEnemie;
+	Door doorOne(aConnectingRoomOne, aConnectingRoomTwo);
+	aListOfDoors.push_back(doorOne);
 }
 
+void AddRoom(int aRoomNumber, std::string aRoomType, std::vector<Room>& aListOfRooms, std::vector<Door>& aListOfDoors)
+{
+	Room room(aRoomNumber, aRoomType);
+	aListOfRooms.push_back(room);
+	if (aRoomType == "Start")
+	{
+		AddDoor(aRoomNumber, aRoomNumber++, aListOfDoors);
+	}
+	else if (aRoomType == "Normal")
+	{
+		AddDoor(aRoomNumber, aRoomNumber++, aListOfDoors);
+	}
+}
 
 
 int main()
 {
-	UI ui;
-	ui.DrawFrame();
+	FlipCursorVisibility(false);
+	DrawFrame();
+	std::vector<Door> doors;
+	std::vector<Room> rooms;
+	Player player; 
 
-	std::vector<Enemy> enemyList;
-	Player player;
-	int playerTarget = 0;
 	
-	int NumberOfEnemeis = 3; // RandomNumber(RoomBase::MinNumberOfEnemis, RoomBase::MaxNumberOfEnemis); 
-	for (int i = 0; i < NumberOfEnemeis; i++)
-	{
-		Enemy enemy;
-		enemyList.push_back(enemy);
+	
 
-	}
-
-	while (player.GetIsAlive() == true && LivingEnemies(enemyList)== true)
+	AddRoom(static_cast<int>(rooms.size()), "Start", rooms, doors);
+	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doors);
+	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doors);
+	AddRoom(static_cast<int>(rooms.size()), "Boss", rooms, doors);
+	player.ShowPlayerStats();
+	while (player.GetIsAlive() == true && rooms[player.GetCurrentRoom()].LastBossDefeted() == false)
 	{
-		//Print("Player HP: " + std::to_string(player.hp));
-		ui.ShowEnemy(enemyList);
-		playerTarget = ui.ChoseEnemy(enemyList);
-		enemyList[playerTarget].UppdateHp(player.GetNormalAttack());
-		Sleep();
-		for (int i = 0; i < NumberOfEnemeis; i++)
-		{
-			if (enemyList[i].hp > 0)
-			{
-				PrintInMenu("The enemy is retaliating and attacking you!");
-				player.UppdateHp(enemyList[i].GetNormalAttack());
-				Sleep();
-			}
-		}
+		ClearGame();
+		rooms[player.GetCurrentRoom()].EnterRoom(player, doors, rooms);
 	}
 	
-	if (player.hp <= 0)
+
+
+
+	if (player.GetPlayerHp() <= 0)
 	{
 		PrintInMenu("Hell is taking over after your defet!");
 	}

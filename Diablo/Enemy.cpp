@@ -27,6 +27,12 @@ void Enemy::UppdateHp(int aChange)
 	}
 }
 
+int Enemy::GetEnemyHp()
+{
+	return hp;
+}
+
+
 bool Enemy::GetIsAlive()
 {
 	return isAlive;

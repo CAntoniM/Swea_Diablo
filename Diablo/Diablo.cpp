@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <memory>
 #include <vector>
 #include "Player.h"
 #include "Enemy.h"
@@ -8,13 +9,13 @@
 #include "Quick functions.h"
 #include "UI.h"
 
-void AddDoor(int aConnectingRoomOne, int aConnectingRoomTwo, std::vector<Door>& aListOfDoors)
+void AddDoor(int aConnectingRoomOne, int aConnectingRoomTwo, std::vector<std::shared_ptr<Door>>& aListOfDoors)
 {
-	Door doorOne(aConnectingRoomOne, aConnectingRoomTwo);
-	aListOfDoors.push_back(doorOne);
+	std::shared_ptr<Door> ptr = std::make_shared<Door>(aConnectingRoomOne, aConnectingRoomTwo);
+	aListOfDoors.push_back(ptr);
 }
 
-void AddRoom(int aRoomNumber, std::string aRoomType, std::vector<Room>& aListOfRooms, std::vector<Door>& aListOfDoors)
+void AddRoom(int aRoomNumber, std::string aRoomType, std::vector<Room>& aListOfRooms, std::vector<std::shared_ptr<Door>>& aListOfDoors)
 {
 	Room room(aRoomNumber, aRoomType);
 	aListOfRooms.push_back(room);
@@ -33,22 +34,19 @@ int main()
 {
 	FlipCursorVisibility(false);
 	DrawFrame();
-	std::vector<Door> doors;
+	std::vector<std::shared_ptr<Door>> doorsSmart;
 	std::vector<Room> rooms;
 	Player player; 
 
-	
-	
-
-	AddRoom(static_cast<int>(rooms.size()), "Start", rooms, doors);
-	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doors);
-	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doors);
-	AddRoom(static_cast<int>(rooms.size()), "Boss", rooms, doors);
+	AddRoom(static_cast<int>(rooms.size()), "Start", rooms, doorsSmart);
+	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doorsSmart);
+	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doorsSmart);
+	AddRoom(static_cast<int>(rooms.size()), "Boss", rooms, doorsSmart);
 	player.ShowPlayerStats();
 	while (player.GetIsAlive() == true && rooms[player.GetCurrentRoom()].LastBossDefeted() == false)
 	{
 		ClearGame();
-		rooms[player.GetCurrentRoom()].EnterRoom(player, doors, rooms);
+		rooms[player.GetCurrentRoom()].EnterRoom(player, doorsSmart, rooms);
 	}
 	
 

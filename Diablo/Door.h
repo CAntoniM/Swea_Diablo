@@ -14,10 +14,10 @@ public:
 
 
 private:
-	int connectingRoomOne;
-	int connectingRoomTwo;
-	int lockDifficultyStr;
-	int lockDifficultyDex;
-	bool doorLockt;
+	int myConnectingRoomOne;
+	int myConnectingRoomTwo;
+	int myLockDifficultyStr;
+	int myLockDifficultyDex;
+	bool myDoorLockt;
 };
 

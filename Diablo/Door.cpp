@@ -3,37 +3,37 @@
 
 Door::Door(int aRoomOne, int aRoomTwo)
 {
-	connectingRoomOne = aRoomOne;
-	connectingRoomTwo = aRoomTwo;
-	lockDifficultyStr = 0;
-	lockDifficultyDex = 0;
-	doorLockt = RandomNumber(0, 1) == 1 ? true : false;
-	if (doorLockt == true)
+	myConnectingRoomOne = aRoomOne;
+	myConnectingRoomTwo = aRoomTwo;
+	myLockDifficultyStr = 0;
+	myLockDifficultyDex = 0;
+	myDoorLockt = RandomNumber(0, 1) == 1 ? true : false;
+	if (myDoorLockt == true)
 	{
-		lockDifficultyStr = RandomNumber(20, 40);
-		lockDifficultyDex = RandomNumber(20, 30);
+		myLockDifficultyStr = RandomNumber(20, 40);
+		myLockDifficultyDex = RandomNumber(20, 30);
 	}
 }
 
 int Door::GetLockDifficultyStr()
 {
-	return lockDifficultyStr;
+	return myLockDifficultyStr;
 }
 
 int Door::GetLockDifficultyDex()
 {
-	return lockDifficultyDex;
+	return myLockDifficultyDex;
 }
 
 int Door::GetConnectingRoom(int aCurrentRoom)
 {
-	if (aCurrentRoom == connectingRoomOne)
+	if (aCurrentRoom == myConnectingRoomOne)
 	{
-		return connectingRoomTwo;
+		return myConnectingRoomTwo;
 	}
-	else if (aCurrentRoom == connectingRoomTwo)
+	else if (aCurrentRoom == myConnectingRoomTwo)
 	{
-		return connectingRoomOne;
+		return myConnectingRoomOne;
 	}
 	
 	return -1;
@@ -42,11 +42,11 @@ int Door::GetConnectingRoom(int aCurrentRoom)
 
 bool Door::GetIsInCurrentRoom(int aCurrentRoom)
 {
-	if (aCurrentRoom == connectingRoomOne)
+	if (aCurrentRoom == myConnectingRoomOne)
 	{
 		return true;
 	}
-	else if (aCurrentRoom == connectingRoomTwo)
+	else if (aCurrentRoom == myConnectingRoomTwo)
 	{
 		return true;
 	}
@@ -58,9 +58,9 @@ bool Door::GetIsInCurrentRoom(int aCurrentRoom)
 
 bool Door::GetDoorLockt()
 {
-	return doorLockt;
+	return myDoorLockt;
 }
 void Door::SetDoorLockt(bool aDoorLockt)
 {
-	doorLockt = aDoorLockt;
+	myDoorLockt = aDoorLockt;
 }

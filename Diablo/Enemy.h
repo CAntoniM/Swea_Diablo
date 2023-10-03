@@ -15,12 +15,12 @@ public:
 
 
 private:
-	int hp;
-	int strength;
-	int dexterety;
-	int dodge;
-	bool isAlive;
-	const int spriteSizeX = 16;
-	const int spriteSizeY = 13;
+	int myHp;
+	int myStrength;
+	int myDexterety;
+	int myDodge;
+	bool myIsAlive;
+	const int mySpriteSizeX = 16;
+	const int mySpriteSizeY = 13;
 };
 

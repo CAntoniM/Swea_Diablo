@@ -6,43 +6,50 @@
 
 Player::Player()
 {
-	strength			= PlayerBase::PlayerBaseStrength;
-	dexterety			= PlayerBase::PlayerBaseDexterety;
-	dodge				= PlayerBase::PlayerBaseDodge;
-	charisma			= PlayerBase::PlayerBaseCharisma;
+	myStrength			= PlayerBase::PlayerBaseStrength;
+	myDexterety			= PlayerBase::PlayerBaseDexterety;
+	myDodge				= PlayerBase::PlayerBaseDodge;
+	myCharisma			= PlayerBase::PlayerBaseCharisma;
 
-	hp					= (strength * 6) + (dexterety * 3);
-	maxHp				= hp;
-	baseDamage			= (strength * 2) + dexterety;
-	carryingCapacity	= (strength * 2) - dodge;
-	athletics			= strength + dexterety;
-	slightOfHand		= dodge + dexterety;
-	persuasion			= charisma + dodge;
+	myHp					= (myStrength * 6) + (myDexterety * 3);
+	myMaxHp				= myHp;
+	myBaseDamage			= (myStrength * 2) + myDexterety;
+	myCarryingCapacity	= (myStrength * 2) - myDodge;
+	myAthletics			= myStrength + myDexterety;
+	mySlightOfHand		= myDodge + myDexterety;
+	myPersuasion			= myCharisma + myDodge;
 
-	isAlive				= true;
-	currentRoom			= 0;
+	myIsAlive				= true;
+	myCurrentRoom			= 0;
 }
 
 void Player::ChangeRoom(int aNewRoom)
 {
-	currentRoom = aNewRoom;
+	myCurrentRoom = aNewRoom;
 }
 
 void Player::ShowPlayerStats()
 {
+	int row = 1;
 	ClearArea(MenuOptions::StatsSeperatorX + 1, 
 		MenuOptions::ScreenSeperatorY + 1, 
-		MenuOptions::FrameSizeEndX - StatsSeperatorX, 
-		MenuOptions::FrameSizeEndY - MenuOptions::ScreenSeperatorY);
-	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + 1);
-	Print("HP: " + std::to_string(hp) + "/" + std::to_string(maxHp));
+		MenuOptions::FrameSizeEndX - StatsSeperatorX - 2, 
+		MenuOptions::FrameSizeEndY - MenuOptions::ScreenSeperatorY - 2);
+	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	Print("HP: " + std::to_string(myHp) + "/" + std::to_string(myMaxHp));
+	row += 2;
 
-	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + 3);
-	Print("STR: \t" + std::to_string(strength));
-	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + 4);
-	Print("DEX: \t" + std::to_string(dexterety));
-	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + 5);
-	Print("Dodge: \t" + std::to_string(dodge));
+	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	Print("STR: \t" + std::to_string(myStrength));
+	row++;
+	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	Print("DEX: \t" + std::to_string(myDexterety));
+	row++;
+	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	Print("CHA: \t" + std::to_string(myCharisma));
+	row++;
+	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	Print("Dodge: \t" + std::to_string(myDodge));
 
 }
 
@@ -52,17 +59,17 @@ int Player::GetPlayerAbilityInt(int anAbility)
 	{
 		case PlayerBase::AthleticsPlayerSkill:
 		{
-			return athletics;
+			return myAthletics;
 			break;
 		}
 		case PlayerBase::SlightOfHandPlayerSkill:
 		{
-			return slightOfHand;
+			return mySlightOfHand;
 			break;
 		}
 		case PlayerBase::PersuasionPlayerSkill:
 		{
-			return persuasion;
+			return myPersuasion;
 			break;
 		}
 	}
@@ -71,36 +78,36 @@ int Player::GetPlayerAbilityInt(int anAbility)
 
 int Player::GetPlayerHp()
 {
-	return hp;
+	return myHp;
 }
 
 int Player::GetCurrentRoom()
 {
-	return currentRoom;
+	return myCurrentRoom;
 }
 
 int Player::GetNormalAttack()
 {
-	int damage = DamageAdjustment(baseDamage);
+	int damage = DamageAdjustment(myBaseDamage);
 	PrintInMenu("You deal: " + std::to_string(damage) + " damage!");
 	return damage;
 }
 
 void Player::UppdateHp(int aChange)
 {
-	hp -= aChange;
-	if (hp <= 0)
+	myHp -= aChange;
+	if (myHp <= 0)
 	{
-		isAlive = false;
+		myIsAlive = false;
 	}
 }
 
 bool Player::GetIsAlive()
 {
-	return isAlive;
+	return myIsAlive;
 }
 
 std::string* Player::GetAbilityCheckList()
 {
-	return abilityChecks;
+	return myAbilityChecks;
 }

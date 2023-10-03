@@ -4,43 +4,43 @@
 
 Enemy::Enemy()
 {
-	hp			= EnemyBase::EnemyBaseHp +			RandomNumber(0, 10);
-	strength	= EnemyBase::EnemyBaseStrength +	RandomNumber(0, 5);
-	dexterety	= EnemyBase::EnemyBaseDexterety +	RandomNumber(0, 5);
-	dodge		= EnemyBase::EnemyBaseDodge +		RandomNumber(0, 5);
-	isAlive		= EnemyBase::EnemyLivingState;
+	myHp			= EnemyBase::EnemyBaseHp +			RandomNumber(0, 10);
+	myStrength	= EnemyBase::EnemyBaseStrength +	RandomNumber(0, 5);
+	myDexterety	= EnemyBase::EnemyBaseDexterety +	RandomNumber(0, 5);
+	myDodge		= EnemyBase::EnemyBaseDodge +		RandomNumber(0, 5);
+	myIsAlive		= EnemyBase::EnemyLivingState;
 }
 
 int Enemy::GetNormalAttack()
 {
-	int damage = DamageAdjustment(strength);
+	int damage = DamageAdjustment(myStrength);
 	PrintInMenu("The enemy deals: " + std::to_string(damage) + " damage!");
 	return damage; 
 }
 
 void Enemy::UppdateHp(int aChange)
 {
-	hp -= aChange;
-	if (hp <= 0)
+	myHp -= aChange;
+	if (myHp <= 0)
 	{
-		isAlive = false;
+		myIsAlive = false;
 	}
 }
 
 int Enemy::GetEnemyHp()
 {
-	return hp;
+	return myHp;
 }
 
 
 bool Enemy::GetIsAlive()
 {
-	return isAlive;
+	return myIsAlive;
 }
 
 const int Enemy::GetSpriteSizeX()
 {
-	return spriteSizeX;
+	return mySpriteSizeX;
 }
 
 void Enemy::ShowTarget(int aStartX, int aStartY, bool aTarget)
@@ -48,10 +48,10 @@ void Enemy::ShowTarget(int aStartX, int aStartY, bool aTarget)
 	if (aTarget == true)
 	{
 		SetColor(ColorInt::RedColorText);
-		SetCursorPosition(aStartX, aStartY + spriteSizeY);
-		for (int j = 0; j < spriteSizeX; j++)
+		SetCursorPosition(aStartX, aStartY + mySpriteSizeY);
+		for (int j = 0; j < mySpriteSizeX; j++)
 		{
-			if (j == 0 || j == spriteSizeX - 1)
+			if (j == 0 || j == mySpriteSizeX - 1)
 			{
 				std::cout << "-";
 			}
@@ -64,8 +64,8 @@ void Enemy::ShowTarget(int aStartX, int aStartY, bool aTarget)
 	}
 	else
 	{
-		SetCursorPosition(aStartX, aStartY + spriteSizeY);
-		for (int j = 0; j < spriteSizeX; j++)
+		SetCursorPosition(aStartX, aStartY + mySpriteSizeY);
+		for (int j = 0; j < mySpriteSizeX; j++)
 		{
 			std::cout << " ";
 		}
@@ -95,6 +95,6 @@ void Enemy::PrintEnemySprite(int aStartX, int aStartY)
 	SetCursorPosition(aStartX, aStartY + 9);
 	std::cout << " .@%@/     @(&@ " << std::endl;         
 
-	SetCursorPosition(aStartX + spriteSizeX/4, aStartY + 11);
-	std::cout << "Hp: " << hp << std::endl;
+	SetCursorPosition(aStartX + mySpriteSizeX/4, aStartY + 11);
+	std::cout << "Hp: " << myHp << std::endl;
 }

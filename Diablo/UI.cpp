@@ -192,7 +192,7 @@ int ChoseEnemy(std::vector<Enemy>& aList)
 	}
 }
 
-int ShowDoors(std::vector<Door>& aVectorOfDoors, std::vector<Room>& aVectorOfRooms, int aCurrentRoom)
+int ShowDoors(std::vector<std::shared_ptr<Door>> aVectorOfDoors, std::vector<Room>& aVectorOfRooms, int aCurrentRoom)
 {
 	int playerChoise = 0;
 
@@ -206,13 +206,13 @@ int ShowDoors(std::vector<Door>& aVectorOfDoors, std::vector<Room>& aVectorOfRoo
 			if (i == playerChoise)
 			{
 				PrintDoorSprite(MenuOptions::gameStartX + ExtraInts::OfSet + (DoorBase::doorSpriteSizeX * i) + extraSpace, MenuOptions::gameStartY,
-					true, aVectorOfRooms[aVectorOfDoors[i].GetConnectingRoom(aCurrentRoom)].GetRoomExplored(), aVectorOfRooms[aVectorOfDoors[i].GetConnectingRoom(aCurrentRoom)].GetRoomName());
+					true, aVectorOfRooms[aVectorOfDoors[i]->GetConnectingRoom(aCurrentRoom)].GetRoomExplored(), aVectorOfRooms[aVectorOfDoors[i]->GetConnectingRoom(aCurrentRoom)].GetRoomName());
 				extraSpace += 3;
 			}
 			else
 			{
 				PrintDoorSprite(MenuOptions::gameStartX + ExtraInts::OfSet + (DoorBase::doorSpriteSizeX * i) + extraSpace, MenuOptions::gameStartY, 
-					false, aVectorOfRooms[aVectorOfDoors[i].GetConnectingRoom(aCurrentRoom)].GetRoomExplored(), aVectorOfRooms[aVectorOfDoors[i].GetConnectingRoom(aCurrentRoom)].GetRoomName());
+					false, aVectorOfRooms[aVectorOfDoors[i]->GetConnectingRoom(aCurrentRoom)].GetRoomExplored(), aVectorOfRooms[aVectorOfDoors[i]->GetConnectingRoom(aCurrentRoom)].GetRoomName());
 				extraSpace += 3;
 			}
 		}

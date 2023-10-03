@@ -19,21 +19,21 @@ public:
 
 
 private:
-	std::string abilityChecks[PlayerBase::NumberOfPlayerAbilitys] = { "Athletics", "Sleight of Hand", "Persuasion" };;
-	int currentRoom;
-	int strength;
-	int dexterety;
-	int dodge;
-	int charisma;
+	std::string myAbilityChecks[PlayerBase::NumberOfPlayerAbilitys] = { "Athletics", "Sleight of Hand", "Persuasion" };;
+	int myCurrentRoom;
+	int myStrength;
+	int myDexterety;
+	int myDodge;
+	int myCharisma;
 
-	int hp;
-	int maxHp;
-	int baseDamage;
-	int carryingCapacity;
-	int athletics;
-	int slightOfHand;
-	int persuasion;
+	int myHp;
+	int myMaxHp;
+	int myBaseDamage;
+	int myCarryingCapacity;
+	int myAthletics;
+	int mySlightOfHand;
+	int myPersuasion;
 
-	bool isAlive;
+	bool myIsAlive;
 };
 

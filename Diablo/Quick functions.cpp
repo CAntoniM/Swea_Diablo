@@ -42,9 +42,26 @@ void Print(std::string aString)
 }
 void PrintInMenu(std::string aString)
 {
-    ClearMenu();
-    SetCursorPosition(MenuOptions::menyStartX, MenuOptions::menyStartY);
-    Print(aString);
+	int row = 0;
+	std::string printOutStringPart = aString;
+	std::string tempString;
+
+	ClearMenu();
+
+	while (printOutStringPart.size() > MenuOptions::StatsSeperatorX - 2)
+	{
+		if (aString.size() > MenuOptions::StatsSeperatorX - 2)
+		{
+			std::string::size_type split = printOutStringPart.rfind(' ', MenuOptions::StatsSeperatorX - 2);
+			SetCursorPosition(MenuOptions::menyStartX, MenuOptions::menyStartY + row);
+			std::cout << printOutStringPart.substr(0, split) << std::endl;
+			printOutStringPart.erase(0, split + 1);
+			row++;
+		}
+	}
+	
+	SetCursorPosition(MenuOptions::menyStartX, MenuOptions::menyStartY + row);
+	std::cout << printOutStringPart << std::endl;
 }
 
 

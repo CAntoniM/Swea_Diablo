@@ -10,12 +10,16 @@ Room::Room(int aRoomNr, std::string aRoomType)
 {
 	myEnemyList;
 	myConnectingDoors;
+	myItemList;
+	
 	myRoomType = aRoomType;
 	myRoomNr = aRoomNr;
 	myRoomName = " ? ? ? ";
+	
 	myRoomExplored = false;
 	myLastBossRoom = false;
 	myLastBossDefeted = false;
+	
 	if (myRoomType == "Random")
 	{
 		myRoomType = "Normal";
@@ -24,6 +28,7 @@ Room::Room(int aRoomNr, std::string aRoomType)
 	if (myRoomType == "Normal")
 	{
 		CreateEnemys();
+		CreateItems(RandomNumber(0, static_cast<int>(RoomBase::MaxNumberOfItemsDropt)));
 		myNumberOfEnemeis = static_cast<int>(myEnemyList.size());
 		myRoomName = "Corridor";
 	}
@@ -37,6 +42,7 @@ Room::Room(int aRoomNr, std::string aRoomType)
 	}
 	else if (myRoomType == "Start")
 	{
+		CreateItems(RandomNumber(0, 1));
 		myRoomName = "Entrance";
 	}
 }
@@ -61,7 +67,7 @@ void Room::CheckConnectingDoors(std::vector<std::shared_ptr<Door>> aListOfDoors)
 	myConnectingDoors.clear();
 	for (int i = 0; i < aListOfDoors.size(); i++)
 	{
-		if (aListOfDoors[i]->GetIsInCurrentRoom(myRoomNr) == true && myConnectingDoors.size() < DoorBase::maxDoorsInARoom)
+		if (aListOfDoors[i]->GetIsInCurrentRoom(myRoomNr) == true && myConnectingDoors.size() < static_cast<int>(DoorBase::maxDoorsInARoom))
 		{
 			myConnectingDoors.push_back(aListOfDoors[i]);
 		}
@@ -83,12 +89,30 @@ bool Room::LivingEnemies()
 
 void Room::CreateEnemys()
 {
-	int NumberOfEnemeis = RandomNumber(RoomBase::MinNumberOfEnemis, RoomBase::MaxNumberOfEnemis); 
-		for (int i = 0; i < NumberOfEnemeis; i++)
+	int numberOfEnemeis = RandomNumber(static_cast<int>(RoomBase::MinNumberOfEnemis), static_cast<int>(RoomBase::MaxNumberOfEnemis));
+		for (int i = 0; i < numberOfEnemeis; i++)
 		{
 			Enemy enemy;
 			myEnemyList.push_back(enemy);
 		}
+}
+
+void Room::CreateItems(int aAmountOfItems)
+{
+	std::vector<ItemType> randomItemType =
+	{
+		ItemType::Dagger,
+		ItemType::Sword,
+		ItemType::GreatSword,
+		ItemType::Helm,
+		ItemType::Armor,
+	};
+	int numberOfItems = RandomNumber(static_cast<int>(RoomBase::MinNumberOfItemsDropt), static_cast<int>(RoomBase::MaxNumberOfItemsDropt));
+	for (int i = 0; i < numberOfItems; i++)
+	{
+		Items items(randomItemType[RandomNumber(0, static_cast<int>(randomItemType.size()) - 1)]);
+		myItemList.push_back(items);
+	}
 }
 
 void Room::Combat(Player& aPlayer)
@@ -118,9 +142,25 @@ void Room::Combat(Player& aPlayer)
 	Sleep();
 }
 
-void Room::Explore()
+void Room::Explore(Player& aPlayer)
 {
-	PrintInMenu("You don't find anything in the room!");
+	if (static_cast<int>(myItemList.size()) <= 0)
+	{
+		PrintInMenu("You don't find anything in the room!");
+	}
+	else
+	{
+		int playerTryPickUp = showItems(myItemList);
+		if (playerTryPickUp >= myItemList.size())
+		{
+			return;
+		}
+		else
+		{
+			aPlayer.PickUpItem(myItemList[playerTryPickUp]);
+		}
+	}
+
 	Sleep();
 }
 
@@ -141,11 +181,11 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 			int playerMenuChoise = 0;
 			PrintInMenu("The door is lockt...");
 			Sleep();
-			MenuControll(aPlayer.GetAbilityCheckList(), PlayerBase::NumberOfPlayerAbilitys, playerMenuChoise, MenuOptions::menyStartY);
+			MenuControll(aPlayer.GetAbilityCheckList(), static_cast<int>(PlayerBase::NumberOfPlayerAbilitys), playerMenuChoise, static_cast<int>(MenuOptions::menyStartY));
 			ClearMenu();
 			switch (playerMenuChoise)
 			{
-				case PlayerBase::AthleticsPlayerSkill: 
+				case static_cast<int>(PlayerBase::AthleticsPlayerSkill):
 				{
 					PrintInMenu("You try to break the door open...");
 					Sleep(1500);
@@ -163,7 +203,7 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 					}
 					break;
 				}
-				case PlayerBase::SlightOfHandPlayerSkill: 
+				case static_cast<int>(PlayerBase::SlightOfHandPlayerSkill):
 				{
 					PrintInMenu("You try to pick the lock...");
 					Sleep(1500);
@@ -181,7 +221,7 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 					}
 					break;
 				}
-				case PlayerBase::PersuasionPlayerSkill: 
+				case static_cast<int>(PlayerBase::PersuasionPlayerSkill):
 				{
 					PrintInMenu("You try to convins the door to open...");
 					Sleep();
@@ -208,21 +248,21 @@ void Room::RoomOptions(Player& aPlayer, std::vector<Room>& aRoomList)
 	while (true)
 	{
 
-		MenuControll(roomOptions, static_cast<int>(size(roomOptions)), playerChoise, MenuOptions::menyStartY);
+		MenuControll(roomOptions, static_cast<int>(size(roomOptions)), playerChoise, static_cast<int>(MenuOptions::menyStartY));
 
 		switch (playerChoise)
 		{
-			case RoomBase::MenuExplore: 
+			case static_cast<int>(RoomBase::MenuExplore):
 			{
-				Explore();
+				Explore(aPlayer);
 				break;
 			}
-			case RoomBase::MenuLoot:
+			case static_cast<int>(RoomBase::MenuLoot):
 			{
 				Loot();
 				break;
 			}
-			case RoomBase::MenuSwitchRoom:
+			case static_cast<int>(RoomBase::MenuSwitchRoom):
 			{
 				SwitchRoom(aPlayer, aRoomList);
 				return;

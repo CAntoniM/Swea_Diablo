@@ -1,26 +1,29 @@
 #include "Player.h"
 #include "Enums.h"
 #include "Quick functions.h"
+#include "Items.h"
 #include <array>
 #include <string>
 
 Player::Player()
 {
-	myStrength			= PlayerBase::PlayerBaseStrength;
-	myDexterety			= PlayerBase::PlayerBaseDexterety;
-	myDodge				= PlayerBase::PlayerBaseDodge;
-	myCharisma			= PlayerBase::PlayerBaseCharisma;
+	myInventory;
 
-	myHp					= (myStrength * 6) + (myDexterety * 3);
+	myStrength			= static_cast<int>(PlayerBase::PlayerBaseStrength);
+	myDexterety			= static_cast<int>(PlayerBase::PlayerBaseDexterety);
+	myDodge				= static_cast<int>(PlayerBase::PlayerBaseDodge);
+	myCharisma			= static_cast<int>(PlayerBase::PlayerBaseCharisma);
+
+	myHp				= (myStrength * 6) + (myDexterety * 3);
 	myMaxHp				= myHp;
-	myBaseDamage			= (myStrength * 2) + myDexterety;
+	myBaseDamage		= (myStrength * 2) + myDexterety;
 	myCarryingCapacity	= (myStrength * 2) - myDodge;
 	myAthletics			= myStrength + myDexterety;
 	mySlightOfHand		= myDodge + myDexterety;
-	myPersuasion			= myCharisma + myDodge;
+	myPersuasion		= myCharisma + myDodge;
 
-	myIsAlive				= true;
-	myCurrentRoom			= 0;
+	myIsAlive			= true;
+	myCurrentRoom		= 0;
 }
 
 void Player::ChangeRoom(int aNewRoom)
@@ -31,29 +34,34 @@ void Player::ChangeRoom(int aNewRoom)
 void Player::ShowPlayerStats()
 {
 	int row = 1;
-	ClearArea(MenuOptions::StatsSeperatorX + 1, 
-		MenuOptions::ScreenSeperatorY + 1, 
-		MenuOptions::FrameSizeEndX - StatsSeperatorX - 2, 
-		MenuOptions::FrameSizeEndY - MenuOptions::ScreenSeperatorY - 2);
-	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	ClearArea(static_cast<int>(MenuOptions::StatsSeperatorX) + 1,
+		static_cast<int>(MenuOptions::ScreenSeperatorY) + 1, 
+		static_cast<int>(MenuOptions::FrameSizeEndX) - static_cast<int>(MenuOptions::StatsSeperatorX) - 2,
+		static_cast<int>(MenuOptions::FrameSizeEndY) - static_cast<int>(MenuOptions::ScreenSeperatorY) - 2);
+	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
 	Print("HP: " + std::to_string(myHp) + "/" + std::to_string(myMaxHp));
 	row += 2;
 
-	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
 	Print("STR: \t" + std::to_string(myStrength));
 	row++;
-	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
 	Print("DEX: \t" + std::to_string(myDexterety));
 	row++;
-	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
 	Print("CHA: \t" + std::to_string(myCharisma));
 	row++;
-	SetCursorPosition(MenuOptions::StatsSeperatorX + 1, MenuOptions::ScreenSeperatorY + row);
+	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
 	Print("Dodge: \t" + std::to_string(myDodge));
 
 }
 
-int Player::GetPlayerAbilityInt(int anAbility)
+void Player::PickUpItem(Items aItem)
+{
+	myInventory.push_back(aItem);
+}
+
+int Player::GetPlayerAbilityInt(PlayerBase anAbility)
 {
 	switch (anAbility)
 	{

@@ -1,5 +1,5 @@
 #pragma once
-enum PlayerBase
+enum class PlayerBase
 {
 	PlayerBaseStrength		= 15,
 	PlayerBaseDexterety		= 10,
@@ -13,7 +13,8 @@ enum PlayerBase
 	PersuasionPlayerSkill	= 2,
 };
 
-enum EnemyBase
+
+enum class EnemyBase
 {
 	EnemyBaseHp				= 30,
 	EnemyBaseStrength		= 10,
@@ -22,25 +23,35 @@ enum EnemyBase
 	EnemyLivingState		= true,
 };
 
-enum RoomBase
+enum class RoomBase
 {
 	MaxNumberOfEnemis		= 3,
 	MinNumberOfEnemis		= 1,
+	
+	MaxNumberOfItemsDropt	= 7,
+	MinNumberOfItemsDropt	= 5,
 
 	MenuExplore				= 0,
 	MenuLoot				= 1,
 	MenuSwitchRoom			= 2,
 
 	numberOfRooms			= 4,
+
 };
 
-enum DoorBase
+enum class DoorBase
 {
 	doorSpriteSizeX			= 16,
 	maxDoorsInARoom			= 4
 };
 
-enum MenuOptions
+enum class ItemBase
+{
+	ProcentalChansLvlThree	= 80,
+	procentalChansLvlTwo	= 50,
+};
+
+enum class MenuOptions
 {
 	MenuListUp				= 1,
 	MenuListDown			= 2,
@@ -63,7 +74,8 @@ enum MenuOptions
 
 };
 
-enum ColorInt
+
+enum class ColorInt
 {
 	WhiteColorText			= 0,
 	GreenColorText			= 1,
@@ -71,10 +83,39 @@ enum ColorInt
 	LightGrayColorText		= 3,
 };
 
-enum ExtraInts
+enum class ExtraInts
 {
 	SleepStandardTime		= 2000,
 	OfSet					= 3,
 	
 };
 
+enum class ItemType
+{
+	Dagger,
+	Sword,
+	GreatSword,
+	Helm,
+	Armor,
+};
+
+enum class PrimeStats
+{
+	Strength,
+	Dexterety,
+	Charisma,
+	Armor,
+};
+
+enum class SecondaryStats
+{
+	Strength,
+	Dexterety,
+	Charisma,
+	MaxHp,
+	Damage,
+	Athletics,
+	SlightOfHand,
+	Persuasion,
+	Armor,
+};

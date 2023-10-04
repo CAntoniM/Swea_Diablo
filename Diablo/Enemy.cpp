@@ -4,11 +4,11 @@
 
 Enemy::Enemy()
 {
-	myHp			= EnemyBase::EnemyBaseHp +			RandomNumber(0, 10);
-	myStrength	= EnemyBase::EnemyBaseStrength +	RandomNumber(0, 5);
-	myDexterety	= EnemyBase::EnemyBaseDexterety +	RandomNumber(0, 5);
-	myDodge		= EnemyBase::EnemyBaseDodge +		RandomNumber(0, 5);
-	myIsAlive		= EnemyBase::EnemyLivingState;
+	myHp			= static_cast<int>(EnemyBase::EnemyBaseHp)			+ RandomNumber(0, 10);
+	myStrength		= static_cast<int>(EnemyBase::EnemyBaseStrength)	+ RandomNumber(0, 5);
+	myDexterety		= static_cast<int>(EnemyBase::EnemyBaseDexterety)	+ RandomNumber(0, 5);
+	myDodge			= static_cast<int>(EnemyBase::EnemyBaseDodge)		+ RandomNumber(0, 5);
+	myIsAlive		= static_cast<bool>(EnemyBase::EnemyLivingState);
 }
 
 int Enemy::GetNormalAttack()

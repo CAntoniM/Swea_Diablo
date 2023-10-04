@@ -48,19 +48,19 @@ void PrintInMenu(std::string aString)
 
 	ClearMenu();
 
-	while (printOutStringPart.size() > MenuOptions::StatsSeperatorX - 2)
+	while (printOutStringPart.size() > static_cast<int>(MenuOptions::StatsSeperatorX) - 2)
 	{
-		if (aString.size() > MenuOptions::StatsSeperatorX - 2)
+		if (aString.size() > static_cast<int>(MenuOptions::StatsSeperatorX) - 2)
 		{
-			std::string::size_type split = printOutStringPart.rfind(' ', MenuOptions::StatsSeperatorX - 2);
-			SetCursorPosition(MenuOptions::menyStartX, MenuOptions::menyStartY + row);
+			std::string::size_type split = printOutStringPart.rfind(' ', static_cast<int>(MenuOptions::StatsSeperatorX) - 2);
+			SetCursorPosition(static_cast<int>(MenuOptions::menyStartX), static_cast<int>(MenuOptions::menyStartY) + row);
 			std::cout << printOutStringPart.substr(0, split) << std::endl;
 			printOutStringPart.erase(0, split + 1);
 			row++;
 		}
 	}
 	
-	SetCursorPosition(MenuOptions::menyStartX, MenuOptions::menyStartY + row);
+	SetCursorPosition(static_cast<int>(MenuOptions::menyStartX), static_cast<int>(MenuOptions::menyStartY) + row);
 	std::cout << printOutStringPart << std::endl;
 }
 
@@ -80,9 +80,9 @@ void ClearArea(int anX, int anY, int aXLength, int aYLength)
 
 void ClearGame()
 {
-	for (int y = 1; y < MenuOptions::ScreenSeperatorY; y++)
+	for (int y = 1; y < static_cast<int>(MenuOptions::ScreenSeperatorY); y++)
 	{
-		for (int x = 1; x < MenuOptions::FrameSizeEndX - 1; x++)
+		for (int x = 1; x < static_cast<int>(MenuOptions::FrameSizeEndX) - 1; x++)
 		{
 			SetCursorPosition(x, y);
 			std::cout << " ";
@@ -93,9 +93,9 @@ void ClearGame()
 
 void ClearMenu()
 {
-	for (int y = MenuOptions::ScreenSeperatorY + 1; y < MenuOptions::FrameSizeEndY - 1; y++)
+	for (int y = static_cast<int>(MenuOptions::ScreenSeperatorY) + 1; y < static_cast<int>(MenuOptions::FrameSizeEndY) - 1; y++)
 	{
-		for (int x = 1; x < MenuOptions::StatsSeperatorX - 1; x++)
+		for (int x = 1; x < static_cast<int>(MenuOptions::StatsSeperatorX) - 1; x++)
 		{
 			SetCursorPosition(x, y);
 			std::cout << " ";
@@ -105,7 +105,7 @@ void ClearMenu()
 
 
 
-void SetColor(int aColor)
+void SetColor(ColorInt aColor)
 {
 	switch (aColor)
 	{
@@ -166,7 +166,7 @@ int RandomNumber(int min, int max)
 	return distrib(gen);
 }
 
-int ButtonPress()
+MenuOptions ButtonPress()
 {
     int button = 0;
     while (true)

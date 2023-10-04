@@ -7,16 +7,16 @@
 
 void Clear();
 void Pause();
-void Sleep(int miliseconds = ExtraInts::SleepStandardTime);
+void Sleep(int miliseconds = static_cast<int>(ExtraInts::SleepStandardTime));
 void Print(std::string aString);
 void PrintInMenu(std::string aString);
 void ClearArea(int anX, int anY, int aXLength, int aYLength = 1);
 void ClearGame();
 void ClearMenu();
-void SetColor(int aColor);
+void SetColor(ColorInt aColor);
 void SetCursorPosition(int aX, int aY);
 void FlipCursorVisibility(bool aSetCursor);
 double RandomFloatNumber(double min, double max);
 int DamageAdjustment(int setDamage);
 int RandomNumber(int min, int max);
-int ButtonPress();
+MenuOptions ButtonPress();

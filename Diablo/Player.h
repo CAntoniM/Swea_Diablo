@@ -1,7 +1,10 @@
 #pragma once
 #include <string>
 #include <array>
+#include <vector>
 #include "Enums.h"
+#include "Items.h"
+
 class Player
 {
 public:
@@ -12,14 +15,15 @@ public:
 	int GetPlayerHp();
 	int GetNormalAttack();
 	int GetCurrentRoom();
-	int GetPlayerAbilityInt(int anAbility); 
+	int GetPlayerAbilityInt(PlayerBase anAbility); 
 	bool GetIsAlive();
 	std::string* GetAbilityCheckList();
-
+	void PickUpItem(Items aItem);
 
 
 private:
-	std::string myAbilityChecks[PlayerBase::NumberOfPlayerAbilitys] = { "Athletics", "Sleight of Hand", "Persuasion" };;
+	std::vector<Items> myInventory;
+	std::string myAbilityChecks[static_cast<int>(PlayerBase::NumberOfPlayerAbilitys)] = { "Athletics", "Sleight of Hand", "Persuasion" };;
 	int myCurrentRoom;
 	int myStrength;
 	int myDexterety;

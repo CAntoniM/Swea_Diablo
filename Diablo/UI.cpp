@@ -1,30 +1,32 @@
 #include "UI.h"
 #include "Quick functions.h"
 #include <Windows.h>
+#include <vector>
 #include "Enemy.h"
 #include "Door.h"
 #include "Room.h"
 #include "Enums.h"
+#include "Items.h"
 
 
 void DrawFrame()
 {
 	SetCursorPosition(0, 0);
-	for (int y = 0; y < MenuOptions::FrameSizeEndY; y++)
+	for (int y = 0; y < static_cast<int>(MenuOptions::FrameSizeEndY); y++)
 	{
-		for (int x = 0; x < MenuOptions::FrameSizeEndX; x++)
+		for (int x = 0; x < static_cast<int>(MenuOptions::FrameSizeEndX); x++)
 		{
-			if (y == MenuOptions::FrameSizeStartY || y == MenuOptions::FrameSizeEndY - 1 || y == MenuOptions::ScreenSeperatorY)
+			if (y == static_cast<int>(MenuOptions::FrameSizeStartY) || y == static_cast<int>(MenuOptions::FrameSizeEndY) - 1 || y == static_cast<int>(MenuOptions::ScreenSeperatorY))
 			{
 				SetCursorPosition(x, y);
 				std::cout << "-";
 			}
-			else if (x == MenuOptions::FrameSizeStartX || x == MenuOptions::FrameSizeEndX - 1)
+			else if (x == static_cast<int>(MenuOptions::FrameSizeStartX) || x == static_cast<int>(MenuOptions::FrameSizeEndX) - 1)
 			{
 				SetCursorPosition(x, y);
 				std::cout << "|";
 			}
-			else if (x == MenuOptions::StatsSeperatorX && y > MenuOptions::ScreenSeperatorY && y < MenuOptions::FrameSizeEndY)
+			else if (x == static_cast<int>(MenuOptions::StatsSeperatorX) && y > static_cast<int>(MenuOptions::ScreenSeperatorY) && y < static_cast<int>(MenuOptions::FrameSizeEndY))
 			{
 				SetCursorPosition(x, y);
 				std::cout << "|";
@@ -35,12 +37,42 @@ void DrawFrame()
 	std::cout << std::endl;
 }
 
+std::string ItemTypeToString(ItemType aItem)
+{
+	switch (aItem)
+	{
+	case ItemType::Dagger:
+		return "Dagger";
+		break;
+
+	case ItemType::Sword:
+		return "Sword";
+		break;
+
+	case ItemType::GreatSword:
+		return "Great Sword";
+		break;
+
+	case ItemType::Helm:
+		return "Helmet";
+		break;
+
+	case ItemType::Armor:
+		return "Armor";
+		break;
+
+	default:
+		return "No Item";
+		break;
+	}
+}
+
 void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMenu, int aStartingYPosision)
 {
 	while (true)
 	{
 		ClearMenu();
-		SetCursorPosition(MenuOptions::menyStartX, MenuOptions::menyStartY);
+		SetCursorPosition(static_cast<int>(MenuOptions::menyStartX), static_cast<int>(MenuOptions::menyStartY));
 		for (int i = 0; i < aMenuSize; ++i)
 		{
 			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -101,6 +133,90 @@ void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMe
 	}
 }
 
+int showItems(std::vector<Items> aListOfItems)
+{
+	int playerChoiseInMenu = 0;
+	while (true)
+	{
+
+		int x;
+		int y;
+
+		ClearGame();
+		SetCursorPosition(static_cast<int>(MenuOptions::gameStartX) + 1, static_cast<int>(MenuOptions::gameStartX) + 1);
+		for (int i = 0; i < static_cast<int>(aListOfItems.size()); ++i)
+		{
+			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+			CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+			if (GetConsoleScreenBufferInfo(hConsole, &csbi))
+			{
+				COORD cursorPosition = csbi.dwCursorPosition;
+				x = cursorPosition.X + 1;
+				y = cursorPosition.Y;
+				SetCursorPosition(x, y);
+			}
+			if (i == playerChoiseInMenu)
+			{
+				SetColor(ColorInt::GreenColorText);
+				std::cout << "\t" << ItemTypeToString(aListOfItems[i].GetItemType()) << "\t <---" << std::endl;
+			}
+			else
+			{
+
+				SetColor(ColorInt::WhiteColorText);
+				std::cout << ItemTypeToString(aListOfItems[i].GetItemType()) << std::endl;
+			}
+		}
+		SetColor(ColorInt::WhiteColorText);
+
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+		if (GetConsoleScreenBufferInfo(hConsole, &csbi))
+		{
+			COORD cursorPosition = csbi.dwCursorPosition;
+			x = cursorPosition.X + 1;
+			y = cursorPosition.Y;
+			SetCursorPosition(x, y);
+		}
+		std::cout << "Return" << std::endl;
+
+		switch (ButtonPress())
+		{
+		case MenuOptions::MenuListUp:
+		{
+			if (playerChoiseInMenu > 0)
+			{
+				playerChoiseInMenu--;
+			}
+			else
+			{
+				playerChoiseInMenu = static_cast<int>(aListOfItems.size());
+			}
+			break;
+		}
+		case MenuOptions::MenuListDown:
+		{
+			if (playerChoiseInMenu < static_cast<int>(aListOfItems.size()))
+			{
+				playerChoiseInMenu++;
+			}
+			else
+			{
+				playerChoiseInMenu = 0;
+			}
+			break;
+		}
+		case MenuOptions::MenuListOption:
+		{
+			return playerChoiseInMenu;
+			break;
+		}
+		}
+	}
+}
+
 void ShowEnemy(std::vector<Enemy>& aList)
 {
 	ClearGame();
@@ -109,7 +225,7 @@ void ShowEnemy(std::vector<Enemy>& aList)
 	{
 		if (aList[i].GetIsAlive() == true)
 		{
-			aList[i].PrintEnemySprite(gameStartX + ofSetX, gameStartY + 2);
+			aList[i].PrintEnemySprite(static_cast<int>(MenuOptions::gameStartX) + ofSetX, static_cast<int>(MenuOptions::gameStartY) + 2);
 			ofSetX += aList[i].GetSpriteSizeX() + 10;
 		}
 		else
@@ -127,17 +243,17 @@ int ChoseEnemy(std::vector<Enemy>& aList)
 	while (true)
 	{
 		int ofSetX = 3;
-		ClearArea(MenuOptions::gameStartX + ofSetX, MenuOptions::gameStartY, FrameSizeEndX - ofSetX);
+		ClearArea(static_cast<int>(MenuOptions::gameStartX) + ofSetX, static_cast<int>(MenuOptions::gameStartY), static_cast<int>(MenuOptions::FrameSizeEndX) - ofSetX);
 		for (int i = 0; i < aList.size(); i++)
 		{
 			if (i == playerChoise)
 			{
-				aList[i].ShowTarget(MenuOptions::gameStartX + ofSetX, MenuOptions::gameStartY + 2, true);
+				aList[i].ShowTarget(static_cast<int>(MenuOptions::gameStartX) + ofSetX, static_cast<int>(MenuOptions::gameStartY) + 2, true);
 			
 			}
 			else
 			{
-				aList[i].ShowTarget(MenuOptions::gameStartX + ofSetX, MenuOptions::gameStartY + 2, false);
+				aList[i].ShowTarget(static_cast<int>(MenuOptions::gameStartX) + ofSetX, static_cast<int>(MenuOptions::gameStartY) + 2, false);
 			}	
 			ofSetX += aList[i].GetSpriteSizeX() + 10;
 			
@@ -205,13 +321,13 @@ int ShowDoors(std::vector<std::shared_ptr<Door>> aVectorOfDoors, std::vector<Roo
 		{
 			if (i == playerChoise)
 			{
-				PrintDoorSprite(MenuOptions::gameStartX + ExtraInts::OfSet + (DoorBase::doorSpriteSizeX * i) + extraSpace, MenuOptions::gameStartY,
+				PrintDoorSprite(static_cast<int>(MenuOptions::gameStartX) + static_cast<int>(ExtraInts::OfSet) + (static_cast<int>(DoorBase::doorSpriteSizeX) * i) + extraSpace, static_cast<int>(MenuOptions::gameStartY),
 					true, aVectorOfRooms[aVectorOfDoors[i]->GetConnectingRoom(aCurrentRoom)].GetRoomExplored(), aVectorOfRooms[aVectorOfDoors[i]->GetConnectingRoom(aCurrentRoom)].GetRoomName());
 				extraSpace += 3;
 			}
 			else
 			{
-				PrintDoorSprite(MenuOptions::gameStartX + ExtraInts::OfSet + (DoorBase::doorSpriteSizeX * i) + extraSpace, MenuOptions::gameStartY, 
+				PrintDoorSprite(static_cast<int>(MenuOptions::gameStartX) + static_cast<int>(ExtraInts::OfSet) + (static_cast<int>(DoorBase::doorSpriteSizeX) * i) + extraSpace, static_cast<int>(MenuOptions::gameStartY),
 					false, aVectorOfRooms[aVectorOfDoors[i]->GetConnectingRoom(aCurrentRoom)].GetRoomExplored(), aVectorOfRooms[aVectorOfDoors[i]->GetConnectingRoom(aCurrentRoom)].GetRoomName());
 				extraSpace += 3;
 			}
@@ -227,13 +343,13 @@ int ShowDoors(std::vector<std::shared_ptr<Door>> aVectorOfDoors, std::vector<Roo
 				}
 				else
 				{
-					playerChoise = aVectorOfDoors.size() - 1;
+					playerChoise = static_cast<int>(aVectorOfDoors.size()) - 1;
 				}
 				break;
 			}
 			case MenuOptions::MenuListRight:
 			{
-				if (playerChoise < aVectorOfDoors.size() - 1)
+				if (playerChoise < static_cast<int>(aVectorOfDoors.size()) - 1)
 				{
 					playerChoise++;
 				}
@@ -317,9 +433,9 @@ void PrintDoorSprite(int aStartX, int aStartY, bool aTarget, bool aRoomExplored,
 	{
 		SetCursorPosition(aStartX, aStartY + 15);
 		SetColor(ColorInt::RedColorText);
-		for (int j = 0; j < DoorBase::doorSpriteSizeX; j++)
+		for (int j = 0; j < static_cast<int>(DoorBase::doorSpriteSizeX); j++)
 		{
-			if (j == 0 || j == DoorBase::doorSpriteSizeX - 1)
+			if (j == 0 || j == static_cast<int>(DoorBase::doorSpriteSizeX) - 1)
 			{
 				std::cout << "-";
 			}
@@ -332,7 +448,7 @@ void PrintDoorSprite(int aStartX, int aStartY, bool aTarget, bool aRoomExplored,
 	}
 	else
 	{
-		ClearArea(aStartX, aStartY + 15, DoorBase::doorSpriteSizeX);
+		ClearArea(aStartX, aStartY + 15, static_cast<int>(DoorBase::doorSpriteSizeX));
 
 	}
 }

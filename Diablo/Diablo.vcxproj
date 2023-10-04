@@ -130,6 +130,7 @@
     <ClCompile Include="Diablo.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Items.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Quick functions.cpp" />
     <ClCompile Include="Room.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Door.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="Items.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Quick functions.h" />
     <ClInclude Include="Room.h" />

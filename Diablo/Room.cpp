@@ -5,6 +5,7 @@
 #include "Quick functions.h"
 #include "Door.h"
 #include "Enums.h"
+#include "Player.h"
 
 Room::Room(int aRoomNr, std::string aRoomType)
 {
@@ -110,7 +111,8 @@ void Room::CreateItems(int aAmountOfItems)
 	int numberOfItems = RandomNumber(static_cast<int>(RoomBase::MinNumberOfItemsDropt), static_cast<int>(RoomBase::MaxNumberOfItemsDropt));
 	for (int i = 0; i < numberOfItems; i++)
 	{
-		Items items(randomItemType[RandomNumber(0, static_cast<int>(randomItemType.size()) - 1)]);
+		//Items items(randomItemType[RandomNumber(0, static_cast<int>(randomItemType.size()) - 1)]);
+		std::shared_ptr<Items> items = std::make_shared <Items>(randomItemType[RandomNumber(0, static_cast<int>(randomItemType.size()) - 1)]);
 		myItemList.push_back(items);
 	}
 }
@@ -147,10 +149,14 @@ void Room::Explore(Player& aPlayer)
 	if (static_cast<int>(myItemList.size()) <= 0)
 	{
 		PrintInMenu("You don't find anything in the room!");
+		Sleep();
+		return;
 	}
-	else
+
+	int playerChoiseInMenu = 0;
+	while (true)
 	{
-		int playerTryPickUp = showItems(myItemList);
+		int playerTryPickUp = showItems(myItemList, playerChoiseInMenu);
 		if (playerTryPickUp >= myItemList.size())
 		{
 			return;
@@ -158,10 +164,9 @@ void Room::Explore(Player& aPlayer)
 		else
 		{
 			aPlayer.PickUpItem(myItemList[playerTryPickUp]);
+			myItemList.erase(myItemList.begin() + playerTryPickUp);
 		}
 	}
-
-	Sleep();
 }
 
 void Room::Loot()
@@ -193,6 +198,7 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 					{
 						myConnectingDoors[doorTry]->SetDoorLockt(false);
 						PrintInMenu("You break the door open and can walk through");
+						Sleep();
 						aPlayer.ChangeRoom(myConnectingDoors[doorTry]->GetConnectingRoom(myRoomNr));
 						return;
 					}
@@ -242,14 +248,15 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 
 void Room::RoomOptions(Player& aPlayer, std::vector<Room>& aRoomList)
 {
-	std::string roomOptions[] = { "Explore", "Loot", "Switch Room" };
+	std::string roomOptions[] = { "Explore", "Loot", "Inventory", "Switch Room"};
 	int playerChoise = 0;
 	
 	while (true)
 	{
-
+		aPlayer.ShowPlayerStats();
 		MenuControll(roomOptions, static_cast<int>(size(roomOptions)), playerChoise, static_cast<int>(MenuOptions::menyStartY));
-
+		ClearMenu();
+		ClearGame();
 		switch (playerChoise)
 		{
 			case static_cast<int>(RoomBase::MenuExplore):
@@ -260,6 +267,11 @@ void Room::RoomOptions(Player& aPlayer, std::vector<Room>& aRoomList)
 			case static_cast<int>(RoomBase::MenuLoot):
 			{
 				Loot();
+				break;
+			}
+			case static_cast<int>(RoomBase::MenuInventory):
+			{
+				aPlayer.InventoryManagement();
 				break;
 			}
 			case static_cast<int>(RoomBase::MenuSwitchRoom):

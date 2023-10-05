@@ -16,6 +16,7 @@ void ClearMenu();
 void SetColor(ColorInt aColor);
 void SetCursorPosition(int aX, int aY);
 void FlipCursorVisibility(bool aSetCursor);
+std::string ItemTypeToString(ItemType aItem);
 double RandomFloatNumber(double min, double max);
 int DamageAdjustment(int setDamage);
 int RandomNumber(int min, int max);

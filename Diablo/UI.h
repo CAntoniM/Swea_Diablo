@@ -11,10 +11,9 @@
 class Room;
 class Door;
 
-std::string ItemTypeToString(ItemType aItem);
 void DrawFrame();
 void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMenu, int aStartingYPosision);
-int showItems(std::vector<Items> aListOfItems);
+int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& playerChoiseInMenu);
 void PrintDoorSprite(int aStartX, int aStartY, bool aTarget, bool aRoomExplored, std::string aRoomName);
 void ShowEnemy(std::vector<Enemy>& aList);
 int ShowDoors(std::vector<std::shared_ptr<Door>> aVectorOfDoors, std::vector<Room>& aVectorOfRooms, int aCurrentRoom);

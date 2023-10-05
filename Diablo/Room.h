@@ -1,11 +1,10 @@
 #pragma once
 #include <vector>
-#include "Enemy.h"
-#include "Player.h"
-#include "Door.h"
-#include "Items.h"
 #include "UI.h"
 #include <array>
+
+class Player;
+class Enemy;
 class Door;
 class Items;
 
@@ -22,7 +21,7 @@ public:
 private:
 
 	std::vector<Enemy> myEnemyList;
-	std::vector<Items> myItemList;
+	std::vector<std::shared_ptr<Items>> myItemList;
 	std::vector<std::shared_ptr<Door>> myConnectingDoors;
 	std::string myRoomType;
 	std::string myRoomName;

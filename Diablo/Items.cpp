@@ -8,6 +8,7 @@ Items::Items(ItemType aItems)
 {
 	myItemType = aItems;
 	myLevel = SetLevel();
+	SetStats();
 }
 
 int Items::SetLevel()
@@ -39,6 +40,7 @@ void Items::SetStats()
 			SecondaryStats::SlightOfHand
 		};
 
+		myItemSlot = ItemSlot::Weapon;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
@@ -60,6 +62,7 @@ void Items::SetStats()
 			SecondaryStats::MaxHp
 		};
 
+		myItemSlot = ItemSlot::Weapon;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
@@ -82,6 +85,7 @@ void Items::SetStats()
 			SecondaryStats::Athletics,
 		};
 
+		myItemSlot = ItemSlot::Weapon;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
@@ -103,6 +107,7 @@ void Items::SetStats()
 			SecondaryStats::Persuasion,
 		};
 
+		myItemSlot = ItemSlot::Helm;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
@@ -125,6 +130,7 @@ void Items::SetStats()
 			SecondaryStats::Athletics,
 		};
 
+		myItemSlot = ItemSlot::Armor;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
@@ -157,4 +163,9 @@ int Items::GetSecondaryStatBuff()
 ItemType Items::GetItemType()
 {
 	return myItemType;
+}
+
+ItemSlot Items::GetItemSlot()
+{
+	return myItemSlot;
 }

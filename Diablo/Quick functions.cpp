@@ -232,3 +232,33 @@ void FlipCursorVisibility(bool aSetCursor)
 
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
+
+std::string ItemTypeToString(ItemType aItem)
+{
+	switch (aItem)
+	{
+	case ItemType::Dagger:
+		return "Dagger";
+		break;
+
+	case ItemType::Sword:
+		return "Sword";
+		break;
+
+	case ItemType::GreatSword:
+		return "Great Sword";
+		break;
+
+	case ItemType::Helm:
+		return "Helmet";
+		break;
+
+	case ItemType::Armor:
+		return "Armor";
+		break;
+
+	default:
+		return "No Item";
+		break;
+	}
+}

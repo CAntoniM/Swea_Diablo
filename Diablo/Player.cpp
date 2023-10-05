@@ -2,17 +2,20 @@
 #include "Enums.h"
 #include "Quick functions.h"
 #include "Items.h"
+#include "Equipment.h"
+#include "UI.h"
 #include <array>
 #include <string>
 
 Player::Player()
 {
+	myEquipment;
 	myInventory;
 
-	myStrength			= static_cast<int>(PlayerBase::PlayerBaseStrength);
-	myDexterety			= static_cast<int>(PlayerBase::PlayerBaseDexterety);
-	myDodge				= static_cast<int>(PlayerBase::PlayerBaseDodge);
-	myCharisma			= static_cast<int>(PlayerBase::PlayerBaseCharisma);
+	myStrength			= myBaseStrength;
+	myDexterety			= myBaseDexterety;
+	myDodge				= myBaseDodge;
+	myCharisma			= myBaseCharisma;
 
 	myHp				= (myStrength * 6) + (myDexterety * 3);
 	myMaxHp				= myHp;
@@ -31,8 +34,57 @@ void Player::ChangeRoom(int aNewRoom)
 	myCurrentRoom = aNewRoom;
 }
 
+void Player::PlayerFindPrimeStatBuff(PrimeStats aPrimeStat, int aStatBuff)
+{
+	switch (aPrimeStat)
+	{
+	case PrimeStats::Strength:
+		myStrength += aStatBuff;
+		break;
+
+	case PrimeStats::Dexterety:
+		myDexterety += aStatBuff;
+		break;
+
+	case PrimeStats::Charisma:
+		myCharisma += aStatBuff;
+		break;
+
+	case PrimeStats::Armor:
+		myArmor += aStatBuff;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Player::UppdatePlayerStats()
+{
+
+	myStrength = myBaseStrength;
+	myDexterety = myBaseDexterety;
+	myDodge = myBaseDodge;
+	myCharisma = myBaseCharisma;
+
+	if (myEquipment.GetEquipmentWeapon() != nullptr)
+	{
+		PlayerFindPrimeStatBuff(myEquipment.GetEquipmentWeapon()->GetPrimeStat(), myEquipment.GetEquipmentWeapon()->GetPrimeStatBuff());
+	}
+	if (myEquipment.GetEquipmentHelm() != nullptr)
+	{
+		PlayerFindPrimeStatBuff(myEquipment.GetEquipmentHelm()->GetPrimeStat(), myEquipment.GetEquipmentHelm()->GetPrimeStatBuff());
+	}
+	if (myEquipment.GetEquipmentArmor() != nullptr)
+	{
+		PlayerFindPrimeStatBuff(myEquipment.GetEquipmentArmor()->GetPrimeStat(), myEquipment.GetEquipmentArmor()->GetPrimeStatBuff());
+	}
+
+}
+
 void Player::ShowPlayerStats()
 {
+	UppdatePlayerStats();
 	int row = 1;
 	ClearArea(static_cast<int>(MenuOptions::StatsSeperatorX) + 1,
 		static_cast<int>(MenuOptions::ScreenSeperatorY) + 1, 
@@ -43,20 +95,49 @@ void Player::ShowPlayerStats()
 	row += 2;
 
 	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-	Print("STR: \t" + std::to_string(myStrength));
+	Print("STR: \t" + std::to_string(myStrength) + "\tCHA: \t" + std::to_string(myCharisma));
 	row++;
 	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-	Print("DEX: \t" + std::to_string(myDexterety));
-	row++;
-	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-	Print("CHA: \t" + std::to_string(myCharisma));
-	row++;
-	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-	Print("Dodge: \t" + std::to_string(myDodge));
+	Print("DEX: \t" + std::to_string(myDexterety) + "\tDodge: \t" + std::to_string(myDodge));
+	row += 2;
 
+	if (myEquipment.GetEquipmentWeapon() != nullptr)
+	{
+		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		Print("Weapon: \t" + ItemTypeToString(myEquipment.GetEquipmentWeapon()->GetItemType()));
+	}
+	else
+	{
+		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		Print("Weapon: \t No Weapon");
+	}
+	row++;
+
+	if (myEquipment.GetEquipmentHelm() != nullptr)
+	{
+		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		Print("Helm: \t" + ItemTypeToString(myEquipment.GetEquipmentHelm()->GetItemType()));
+	}
+	else
+	{
+		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		Print("Helm: \t No Helm");
+	}
+	row++;
+
+	if (myEquipment.GetEquipmentArmor() != nullptr)
+	{
+		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		Print("Armor: \t" + ItemTypeToString(myEquipment.GetEquipmentArmor()->GetItemType()));
+	}
+	else
+	{
+		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		Print("Armor: \t No Armor");
+	}
 }
 
-void Player::PickUpItem(Items aItem)
+void Player::PickUpItem(std::shared_ptr<Items> aItem)
 {
 	myInventory.push_back(aItem);
 }
@@ -118,4 +199,50 @@ bool Player::GetIsAlive()
 std::string* Player::GetAbilityCheckList()
 {
 	return myAbilityChecks;
+}
+
+std::vector<std::shared_ptr<Items>> Player::GetInventory()
+{
+	return myInventory;
+}
+
+void Player::EquipItem(int aItemChoise)
+{
+	switch (myInventory[aItemChoise]->GetItemSlot())
+		{
+		case ItemSlot::Weapon: 
+		{
+			myEquipment.SetEquipentWeapon(myInventory[aItemChoise]);
+			break;
+		}
+		case ItemSlot::Helm:
+		{
+			myEquipment.SetEquipentHelm(myInventory[aItemChoise]);
+			break;
+		}
+		case ItemSlot::Armor:
+		{
+			myEquipment.SetEquipentArmor(myInventory[aItemChoise]);
+			break;
+		}
+		break;
+	}
+}
+
+void Player::InventoryManagement()
+{
+	int playerChoiseInMenu = 0;
+	while (true)
+	{
+		ShowPlayerStats();
+		int playerTryPickUp = showItems(GetInventory(), playerChoiseInMenu);
+		if (playerTryPickUp >= GetInventory().size())
+		{
+			return;
+		}
+		else
+		{
+			EquipItem(playerTryPickUp);
+		}
+	}
 }

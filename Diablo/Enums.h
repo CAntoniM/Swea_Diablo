@@ -3,9 +3,10 @@ enum class PlayerBase
 {
 	PlayerBaseStrength		= 15,
 	PlayerBaseDexterety		= 10,
-	PlayerBaseDodge			= 5,
 	PlayerBaseCharisma		= 12,
+	PlayerBaseDodge			= 5,
 	NumberOfPlayerAbilitys	= 3,
+	PlayerBaseArmor			= 1,
 	PlayerLivingState		= true,
 
 	AthleticsPlayerSkill	= 0,
@@ -29,11 +30,14 @@ enum class RoomBase
 	MinNumberOfEnemis		= 1,
 	
 	MaxNumberOfItemsDropt	= 7,
-	MinNumberOfItemsDropt	= 5,
+	MinNumberOfItemsDropt	= 5
+	,
 
 	MenuExplore				= 0,
 	MenuLoot				= 1,
-	MenuSwitchRoom			= 2,
+	MenuInventory			= 2,
+	MenuSwitchRoom			= 3,
+	
 
 	numberOfRooms			= 4,
 
@@ -118,4 +122,11 @@ enum class SecondaryStats
 	SlightOfHand,
 	Persuasion,
 	Armor,
+};
+
+enum class ItemSlot
+{
+	Helm,
+	Armor,
+	Weapon,
 };

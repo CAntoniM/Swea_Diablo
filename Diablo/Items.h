@@ -9,6 +9,7 @@ class Items
 		int SetLevel();
 		void SetStats();
 		ItemType myItemType;
+		ItemSlot myItemSlot;
 		PrimeStats myPrimeStat;
 		SecondaryStats mySecondaryStat;
 		int myPrimeStatBuff;
@@ -22,6 +23,7 @@ class Items
 		SecondaryStats GetSecondaryStat();
 		int GetPrimeStatBuff();
 		int GetSecondaryStatBuff();
+		ItemSlot GetItemSlot();
 
 
 

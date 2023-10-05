@@ -9,6 +9,7 @@
 #include "Items.h"
 
 
+
 void DrawFrame()
 {
 	SetCursorPosition(0, 0);
@@ -35,36 +36,6 @@ void DrawFrame()
 		}
 	}
 	std::cout << std::endl;
-}
-
-std::string ItemTypeToString(ItemType aItem)
-{
-	switch (aItem)
-	{
-	case ItemType::Dagger:
-		return "Dagger";
-		break;
-
-	case ItemType::Sword:
-		return "Sword";
-		break;
-
-	case ItemType::GreatSword:
-		return "Great Sword";
-		break;
-
-	case ItemType::Helm:
-		return "Helmet";
-		break;
-
-	case ItemType::Armor:
-		return "Armor";
-		break;
-
-	default:
-		return "No Item";
-		break;
-	}
 }
 
 void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMenu, int aStartingYPosision)
@@ -133,9 +104,12 @@ void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMe
 	}
 }
 
-int showItems(std::vector<Items> aListOfItems)
+int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoiseInMenu)
 {
-	int playerChoiseInMenu = 0;
+	if (aPlayerChoiseInMenu > static_cast<int>(aListOfItems.size()))
+	{
+		aPlayerChoiseInMenu--;
+	}
 	while (true)
 	{
 
@@ -143,32 +117,32 @@ int showItems(std::vector<Items> aListOfItems)
 		int y;
 
 		ClearGame();
-		SetCursorPosition(static_cast<int>(MenuOptions::gameStartX) + 1, static_cast<int>(MenuOptions::gameStartX) + 1);
+		SetCursorPosition(static_cast<int>(MenuOptions::gameStartX), static_cast<int>(MenuOptions::gameStartX) + 1);
 		for (int i = 0; i < static_cast<int>(aListOfItems.size()); ++i)
 		{
 			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-			CONSOLE_SCREEN_BUFFER_INFO csbi;
+			CONSOLE_SCREEN_BUFFER_INFO csbi; 
 
-			if (GetConsoleScreenBufferInfo(hConsole, &csbi))
+			if (GetConsoleScreenBufferInfo(hConsole, &csbi)) 
 			{
 				COORD cursorPosition = csbi.dwCursorPosition;
 				x = cursorPosition.X + 1;
 				y = cursorPosition.Y;
 				SetCursorPosition(x, y);
 			}
-			if (i == playerChoiseInMenu)
+
+			if (i == aPlayerChoiseInMenu)
 			{
 				SetColor(ColorInt::GreenColorText);
-				std::cout << "\t" << ItemTypeToString(aListOfItems[i].GetItemType()) << "\t <---" << std::endl;
+				std::cout << "\t" << ItemTypeToString(aListOfItems[i]->GetItemType()) << "\t <---" << std::endl;
 			}
 			else
 			{
 
 				SetColor(ColorInt::WhiteColorText);
-				std::cout << ItemTypeToString(aListOfItems[i].GetItemType()) << std::endl;
+				std::cout << ItemTypeToString(aListOfItems[i]->GetItemType()) << std::endl;
 			}
 		}
-		SetColor(ColorInt::WhiteColorText);
 
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -180,37 +154,49 @@ int showItems(std::vector<Items> aListOfItems)
 			y = cursorPosition.Y;
 			SetCursorPosition(x, y);
 		}
-		std::cout << "Return" << std::endl;
+
+		if (aPlayerChoiseInMenu == static_cast<int>(aListOfItems.size()))
+		{
+			SetColor(ColorInt::GreenColorText);
+			std::cout << "\tReturn\t <---" << std::endl;
+		}
+		else
+		{
+			SetColor(ColorInt::WhiteColorText);
+			std::cout << "Return" << std::endl;
+
+		}
+		SetColor(ColorInt::WhiteColorText);
 
 		switch (ButtonPress())
 		{
 		case MenuOptions::MenuListUp:
 		{
-			if (playerChoiseInMenu > 0)
+			if (aPlayerChoiseInMenu > 0)
 			{
-				playerChoiseInMenu--;
+				aPlayerChoiseInMenu--;
 			}
 			else
 			{
-				playerChoiseInMenu = static_cast<int>(aListOfItems.size());
+				aPlayerChoiseInMenu = static_cast<int>(aListOfItems.size());
 			}
 			break;
 		}
 		case MenuOptions::MenuListDown:
 		{
-			if (playerChoiseInMenu < static_cast<int>(aListOfItems.size()))
+			if (aPlayerChoiseInMenu < static_cast<int>(aListOfItems.size()))
 			{
-				playerChoiseInMenu++;
+				aPlayerChoiseInMenu++;
 			}
 			else
 			{
-				playerChoiseInMenu = 0;
+				aPlayerChoiseInMenu = 0;
 			}
 			break;
 		}
 		case MenuOptions::MenuListOption:
 		{
-			return playerChoiseInMenu;
+			return aPlayerChoiseInMenu;
 			break;
 		}
 		}

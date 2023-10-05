@@ -3,32 +3,51 @@
 #include <array>
 #include <vector>
 #include "Enums.h"
-#include "Items.h"
+#include "Equipment.h"
+#include <memory>
+
+class Items;
+class Equipment;
+
 
 class Player
 {
 public:
 	Player();
-	void UppdateHp(int aChange);
-	void ChangeRoom(int aNewRoom);
-	void ShowPlayerStats();
+	std::vector<std::shared_ptr<Items>> GetInventory();
+	std::string* GetAbilityCheckList();
 	int GetPlayerHp();
 	int GetNormalAttack();
 	int GetCurrentRoom();
 	int GetPlayerAbilityInt(PlayerBase anAbility); 
 	bool GetIsAlive();
-	std::string* GetAbilityCheckList();
-	void PickUpItem(Items aItem);
+	void UppdatePlayerStats();
+	void PickUpItem(std::shared_ptr<Items> aItem);
+	void UppdateHp(int aChange);
+	void ChangeRoom(int aNewRoom);
+	void ShowPlayerStats();
+	void EquipItem(int aItemChoise);
+	void InventoryManagement();
+	void PlayerFindPrimeStatBuff(PrimeStats aPrimeStat, int aStatBuff);
 
 
 private:
-	std::vector<Items> myInventory;
+	Equipment myEquipment;
+	std::vector<std::shared_ptr<Items>> myInventory;
 	std::string myAbilityChecks[static_cast<int>(PlayerBase::NumberOfPlayerAbilitys)] = { "Athletics", "Sleight of Hand", "Persuasion" };;
 	int myCurrentRoom;
+	
+	const int myBaseStrength = static_cast<int>(PlayerBase::PlayerBaseStrength);
+	const int myBaseDexterety = static_cast<int>(PlayerBase::PlayerBaseDexterety);
+	const int myBaseDodge = static_cast<int>(PlayerBase::PlayerBaseDodge);
+	const int myBaseCharisma = static_cast<int>(PlayerBase::PlayerBaseCharisma);
+	const int myBaseArmor = 0;
+
 	int myStrength;
 	int myDexterety;
 	int myDodge;
 	int myCharisma;
+	int myArmor;
 
 	int myHp;
 	int myMaxHp;

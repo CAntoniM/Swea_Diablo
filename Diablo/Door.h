@@ -8,16 +8,16 @@ public:
 	int GetConnectingRoom(int aCurrentRoom);
 	int GetLockDifficultyStr();
 	int GetLockDifficultyDex();
-	bool GetIsInCurrentRoom(int aCurrentRoom);
-	bool GetDoorLockt();
-	void SetDoorLockt(bool aDoorLockt);
+	bool IsInCurrentRoom(int aCurrentRoom);
+	bool IsDoorLocked();
+	void isDoorLocked(bool aDoorLockt);
 
 
 private:
-	int myConnectingRoomOne;
-	int myConnectingRoomTwo;
-	int myLockDifficultyStr;
-	int myLockDifficultyDex;
-	bool myDoorLockt;
+	int _connecting_room_one;
+	int _connecting_room_two;
+	int _lock_difficulty_str;
+	int _lock_difficulty_dex;
+	bool _door_lockt;
 };
 

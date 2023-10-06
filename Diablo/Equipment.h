@@ -1,25 +1,25 @@
 #pragma once
 #include <memory>
 
-class Items;
+#include "Item.h"
 
 class Equipment
 {
 public:
 	Equipment();
-	void SetEquipentWeapon(std::shared_ptr<Items>);
-	void SetEquipentHelm(std::shared_ptr<Items>);
-	void SetEquipentArmor(std::shared_ptr<Items>);
+	void SetEquipentWeapon(std::shared_ptr<Item>);
+	void SetEquipentHelm(std::shared_ptr<Item>);
+	void SetEquipentArmor(std::shared_ptr<Item>);
 
-	std::shared_ptr<Items> GetEquipmentWeapon();
-	std::shared_ptr<Items> GetEquipmentHelm();
-	std::shared_ptr<Items> GetEquipmentArmor();
+	std::shared_ptr<Item> GetEquipmentWeapon();
+	std::shared_ptr<Item> GetEquipmentHelm();
+	std::shared_ptr<Item> GetEquipmentArmor();
 
 
 private:
-	std::shared_ptr<Items> myEquipmentArmor;
-	std::shared_ptr<Items> myEquipmentWeapon;
-	std::shared_ptr<Items> myEquipmentHelm;
+	std::shared_ptr<Item> _equipment_armor;
+	std::shared_ptr<Item> _equipment_weapon;
+	std::shared_ptr<Item> _equipment_helm;
 
 };
 

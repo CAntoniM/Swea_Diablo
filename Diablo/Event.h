@@ -2,10 +2,10 @@
 #include "Enums.h"
 #include <string>
 
-class Events
+class Event
 {
 public:
-	Events();
+	Event();
 	std::string GetEventDescription();
 	PrimeStats GetAffectedStat();
 	int GetStatBuff();
@@ -15,9 +15,9 @@ private:
 	void Shrine();
 	void Poison();
 	void Trap();
-	std::string myEventDescription;
-	EventNames myEventName;
-	PrimeStats myAffectedStat;
-	int myStatBuff;
+	std::string _description;
+	EventNames _name;
+	PrimeStats _affected_stat;
+	int _stat_buff;
 };
 

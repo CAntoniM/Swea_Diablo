@@ -6,7 +6,7 @@
 #include "Enemy.h"
 #include "Room.h"
 #include "Door.h"
-#include "Quick functions.h"
+#include "Quick_functions.h"
 #include "UI.h"
 
 void AddDoor(int aConnectingRoomOne, int aConnectingRoomTwo, std::vector<std::shared_ptr<Door>>& aListOfDoors)
@@ -32,27 +32,37 @@ void AddRoom(int aRoomNumber, std::string aRoomType, std::vector<Room>& aListOfR
 
 int main()
 {
-	FlipCursorVisibility(false);
+	SetCursorVisibility(false);
 	DrawFrame();
-	std::vector<std::shared_ptr<Door>> doorsSmart;
+	std::vector<std::shared_ptr<Door>> doors_smart;
 	std::vector<Room> rooms;
 	Player player; 
 
-	AddRoom(static_cast<int>(rooms.size()), "Start", rooms, doorsSmart);
-	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doorsSmart);
-	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doorsSmart);
-	AddRoom(static_cast<int>(rooms.size()), "Boss", rooms, doorsSmart);
-	player.ShowPlayerStats();
-	while (player.GetIsAlive() == true && rooms[player.GetCurrentRoom()].LastBossDefeted() == false)
+	AddRoom(static_cast<int>(rooms.size()), "Start", rooms, doors_smart);
+	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doors_smart);
+	AddRoom(static_cast<int>(rooms.size()), "Normal", rooms, doors_smart);
+	AddRoom(static_cast<int>(rooms.size()), "Boss", rooms, doors_smart);
+	player.ShowStats();
+
+	/*
+	* Code structure comment: 
+	* This is not wrong but from another developers prospective its very strage 
+	* 
+	* normally the game state would be contained in its own global object as it is hard to understand working backwards
+	* that the state of if the game is contained in the the state of the rooms rather than in a dedicated place so you might 
+	* call that object world or gamestate and call something world.isLastBossDefeted(); as this is more a question about the
+	* current game state rather than about the current room.
+	*/
+	while (player.IsAlive() && rooms[player.GetCurrentRoom()].LastBossDefeted() == false)
 	{
-		ClearGame();
-		rooms[player.GetCurrentRoom()].EnterRoom(player, doorsSmart, rooms);
+		ClearGameView();
+		rooms[player.GetCurrentRoom()].EnterRoom(player, doors_smart, rooms);
 	}
 	
 
 
 
-	if (player.GetPlayerHp() <= 0)
+	if (player.GetHP() <= 0)
 	{
 		PrintInMenu("Hell is taking over after your defet!");
 	}

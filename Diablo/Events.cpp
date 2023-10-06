@@ -1,18 +1,18 @@
-#include "Events.h"
+#include "Event.h"
 #include "Enums.h"
-#include "Quick functions.h"
+#include "Quick_functions.h"
 #include <string>
 
-Events::Events()
+Event::Event()
 {
-	myEventName;
-	myAffectedStat;
-	myStatBuff;
-	myEventDescription;
+	_name;
+	_affected_stat;
+	_stat_buff;
+	_description;
 	SetRandomEvent();
 }
 
-void Events::SetRandomEvent()
+void Event::SetRandomEvent()
 {
 	switch (RandomNumber(1, 4)) 
 	{
@@ -39,9 +39,9 @@ void Events::SetRandomEvent()
 	}
 }
 
-void Events::Shrine()
+void Event::Shrine()
 {
-	myEventName = EventNames::Shrine;
+	_name = EventNames::Shrine;
 	std::vector<PrimeStats> randomPrimeStat = {
 	PrimeStats::Strength,
 	PrimeStats::Dexterety,
@@ -49,53 +49,53 @@ void Events::Shrine()
 	PrimeStats::Armor,
 	};
 
-	myStatBuff = RandomNumber(5, 10);
-	myAffectedStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
-	myEventDescription = "You feel a growing light inside of you. Your " + PrimeStatToString(myAffectedStat) + " has improved!";
+	_stat_buff = RandomNumber(5, 10);
+	_affected_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+	_description = "You feel a growing light inside of you. Your " + toString(_affected_stat) + " has improved!";
 }
 
-void Events::Poison()
+void Event::Poison()
 {
-	myEventName = EventNames::Poison;
+	_name = EventNames::Poison;
 	std::vector<PrimeStats> randomPrimeStat = {
 	PrimeStats::Strength,
 	PrimeStats::Dexterety,
 	PrimeStats::Charisma,
 	};
 
-	myStatBuff = -RandomNumber(5, 10);
-	myAffectedStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
-	myEventDescription = "You have been poisoned. Your " + PrimeStatToString(myAffectedStat) + " has deteriorated!";
+	_stat_buff = -RandomNumber(5, 10);
+	_affected_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+	_description = "You have been poisoned. Your " + toString(_affected_stat) + " has deteriorated!";
 }
 
-void Events::Trap()
+void Event::Trap()
 {
-	myEventName = EventNames::Trap;
-	myAffectedStat = PrimeStats::Hp;
+	_name = EventNames::Trap;
+	_affected_stat = PrimeStats::Hp;
 	bool dodge = RandomNumber(0, 1) == 1 ? true : false;
 	if (dodge)
 	{
-		myStatBuff = 0;
-		myEventDescription = "There is a trap! You dodge it without taking any damage!";
+		_stat_buff = 0;
+		_description = "There is a trap! You dodge it without taking any damage!";
 	}
 	else
 	{
-		myStatBuff = -RandomNumber(10, 30);
-		myEventDescription = "There is a trap! You get hit and take " + std::to_string(myStatBuff) + " damge!";
+		_stat_buff = -RandomNumber(10, 30);
+		_description = "There is a trap! You get hit and take " + std::to_string(_stat_buff) + " damge!";
 	}
 }
 
-std::string Events::GetEventDescription()
+std::string Event::GetEventDescription()
 {
-	return myEventDescription;
+	return _description;
 }
 
-PrimeStats Events::GetAffectedStat()
+PrimeStats Event::GetAffectedStat()
 {
-	return myAffectedStat;
+	return _affected_stat;
 }
 
-int Events::GetStatBuff()
+int Event::GetStatBuff()
 {
-	return myStatBuff;
+	return _stat_buff;
 }

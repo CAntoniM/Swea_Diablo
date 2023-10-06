@@ -1,5 +1,5 @@
 #pragma once
-#include "Quick functions.h"
+#include "Quick_functions.h"
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -36,48 +36,48 @@ void Sleep(int miliseconds)
 		_getch();
 	}
 }
-void Print(std::string aString)
+void Print(std::string string)
 {
-	std::cout << aString << std::endl;
+	std::cout << string << std::endl;
 }
-void PrintInMenu(std::string aString)
+void PrintInMenu(std::string string)
 {
 	int row = 0;
-	std::string printOutStringPart = aString;
+	std::string print_out_string_part = string;
 	std::string tempString;
 
 	ClearMenu();
 
-	while (printOutStringPart.size() > static_cast<int>(MenuOptions::StatsSeperatorX) - 2)
+	while (print_out_string_part.size() > static_cast<int>(MenuOptions::StatsSeperatorX) - 2)
 	{
-		if (aString.size() > static_cast<int>(MenuOptions::StatsSeperatorX) - 2)
+		if (string.size() > static_cast<int>(MenuOptions::StatsSeperatorX) - 2)
 		{
-			std::string::size_type split = printOutStringPart.rfind(' ', static_cast<int>(MenuOptions::StatsSeperatorX) - 2);
+			std::string::size_type split = print_out_string_part.rfind(' ', static_cast<int>(MenuOptions::StatsSeperatorX) - 2);
 			SetCursorPosition(static_cast<int>(MenuOptions::menyStartX), static_cast<int>(MenuOptions::menyStartY) + row);
-			std::cout << printOutStringPart.substr(0, split) << std::endl;
-			printOutStringPart.erase(0, split + 1);
+			std::cout << print_out_string_part.substr(0, split) << std::endl;
+			print_out_string_part.erase(0, split + 1);
 			row++;
 		}
 	}
 	
 	SetCursorPosition(static_cast<int>(MenuOptions::menyStartX), static_cast<int>(MenuOptions::menyStartY) + row);
-	std::cout << printOutStringPart << std::endl;
+	std::cout << print_out_string_part << std::endl;
 }
 
 
-void ClearArea(int anX, int anY, int aXLength, int aYLength)
+void ClearArea(int x, int y, int aXLength, int aYLength)
 {
-	for (int y = 0; y < aYLength; y++)
+	for (; y < aYLength; y++)
 	{
-		for (int x = 0; x < aXLength; x++)
+		for (; x < aXLength; x++)
 		{
-			SetCursorPosition(anX + x, anY + y);
+			SetCursorPosition(x , y);
 			Print(" ");
 		}
 	}
 
 }
-void ClearGame()
+void ClearGameView()
 {
 	for (int y = 1; y < static_cast<int>(MenuOptions::ScreenSeperatorY); y++)
 	{
@@ -101,9 +101,9 @@ void ClearMenu()
 	}
 }
 
-void SetColor(ColorInt aColor)
+void SetColor(ColorInt color)
 {
-	switch (aColor)
+	switch (color)
 	{
 	case ColorInt::GreenColorText:
 	{
@@ -132,17 +132,17 @@ void SetColor(ColorInt aColor)
 	}
 	}
 }
-void SetCursorPosition(int aX, int aY)
+void SetCursorPosition(int x, int y)
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	std::cout.flush();
-	COORD coord = { (SHORT)aX, (SHORT)aY };
+	COORD coord = { (SHORT)x, (SHORT)y };
 	SetConsoleCursorPosition(hConsole, coord);
 }
 
-int DamageAdjustment(int setDamage)
+int DamageAdjustment(int damage)
 {
-	 return static_cast<int>(setDamage * RandomFloatNumber(0.8, 1.2) + 0.5);
+	 return static_cast<int>(damage * RandomFloatNumber(0.8, 1.2) + 0.5);
 }
 double RandomFloatNumber(double min, double max)
 {
@@ -219,9 +219,9 @@ MenuOptions ButtonPress()
     }
 }
 
-std::string ItemTypeToString(ItemType aItem)
+std::string toString(ItemType item)
 {
-	switch (aItem)
+	switch (item)
 	{
 	case ItemType::Dagger:
 		return "Dagger";
@@ -248,9 +248,9 @@ std::string ItemTypeToString(ItemType aItem)
 		break;
 	}
 }
-std::string PrimeStatToString(PrimeStats aPrimeStat)
+std::string toString(PrimeStats prime_stat)
 {
-	switch (aPrimeStat)
+	switch (prime_stat)
 	{
 	case PrimeStats::Strength:
 		return "Srenght";
@@ -274,9 +274,9 @@ std::string PrimeStatToString(PrimeStats aPrimeStat)
 	}
 }
 
-std::string SecondaryStatToString(SecondaryStats aSecondaryStat)
+std::string toString(SecondaryStats secondary_stat)
 {
-	switch (aSecondaryStat)
+	switch (secondary_stat)
 	{
 	case SecondaryStats::Strength:
 		return "Srenght";
@@ -319,11 +319,11 @@ std::string SecondaryStatToString(SecondaryStats aSecondaryStat)
 	}
 }
 
-void FlipCursorVisibility(bool aSetCursor)
+void SetCursorVisibility(bool is_visible)
 {
 	CONSOLE_CURSOR_INFO cursorInfo;
 	cursorInfo.dwSize = 100;
-	cursorInfo.bVisible = aSetCursor;
+	cursorInfo.bVisible = is_visible;
 
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }

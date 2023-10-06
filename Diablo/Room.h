@@ -4,11 +4,12 @@
 #include <array>
 #include <memory>
 
-class Events;
-class Player;
-class Enemy;
-class Door;
-class Items;
+#include "Event.h"
+#include "Room.h"
+#include "Enemy.h"
+#include "Room.h"
+#include "Item.h"
+#include "Player.h"
 
 class Room
 {
@@ -22,12 +23,12 @@ public:
 
 private:
 
-	std::vector<Enemy> myEnemyList;
-	std::vector<std::shared_ptr<Items>> myItemList;
-	std::vector<std::shared_ptr<Door>> myConnectingDoors;
-	std::shared_ptr<Events> myEvent;
-	std::string myRoomType;
-	std::string myRoomName;
+	std::vector<Enemy> _enemy_list;
+	std::vector<std::shared_ptr<Item>> _item_list;
+	std::vector<std::shared_ptr<Door>> _connecting_doors;
+	std::shared_ptr<Event> _event;
+	std::string _room_type;
+	std::string _room_name;
 	void RoomDescription();
 	void CheckConnectingDoors(std::vector<std::shared_ptr<Door>> aListOfDoors);
 	void CreateEnemys();
@@ -36,12 +37,12 @@ private:
 	void Explore(Player& aPlayer);
 	void Loot();
 	void RoomOptions(Player& aPlayer, std::vector<Room>& aRoomList);
-	int myRoomNr;
-	int myNumberOfEnemeis;
+	int _room_nr;
+	int _number_of_enemeis;
 	bool LivingEnemies();
-	bool myLastBossRoom;
-	bool myLastBossDefeted;
-	bool myRoomExplored;
+	bool _last_boss_room;
+	bool _last_boss_defeted;
+	bool _room_explored;
 
 };
 

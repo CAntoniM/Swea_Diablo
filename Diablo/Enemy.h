@@ -5,22 +5,22 @@ class Enemy
 public:
 	Enemy();
 	void ShowTarget(int aStartX, int aStartY, bool aTarget);
-	void PrintEnemySprite(int aStartX, int aStartY);
+	void PrintSprite(int aStartX, int aStartY);
 	void UppdateHp(int aChange);
-	int GetEnemyHp();
+	int GetHP();
 	int GetNormalAttack();
 	const int GetSpriteSizeX();
-	bool GetIsAlive();
+	bool IsAlive();
 
 
 
 private:
-	int myHp;
-	int myStrength;
-	int myDexterety;
-	int myDodge;
-	bool myIsAlive;
-	const int mySpriteSizeX = 16;
-	const int mySpriteSizeY = 13;
+	int _hp;
+	int _strength;
+	int _dexterety;
+	int _dodge;
+	bool _is_alive;
+	const int _sprite_size_x = 16;
+	const int _sprite_size_y = 13;
 };
 

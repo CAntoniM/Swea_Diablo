@@ -7,6 +7,7 @@ enum class PlayerBase
 	PlayerBaseDodge			= 5,
 	NumberOfPlayerAbilitys	= 3,
 	PlayerBaseArmor			= 1,
+	//THIS IS VERY VERY EVIL.... in c 0 == false and 0 != true so this can cuase issues in ways you are not expecting
 	PlayerLivingState		= true,
 	ResetStats				= 0,
 
@@ -22,6 +23,7 @@ enum class EnemyBase
 	EnemyBaseStrength		= 10,
 	EnemyBaseDexterety		= 10,
 	EnemyBaseDodge			= 5,
+	//THIS IS VERY VERY EVIL.... in c 0 == false and 0 != true so this can cuase issues in ways you are not expecting
 	EnemyLivingState		= true,
 };
 

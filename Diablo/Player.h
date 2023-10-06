@@ -5,59 +5,57 @@
 #include "Enums.h"
 #include "Equipment.h"
 #include <memory>
-
-class Items;
-class Equipment;
+#include "Item.h"
 
 
 class Player
 {
 public:
 	Player();
-	std::vector<std::shared_ptr<Items>> GetInventory();
+	std::vector<std::shared_ptr<Item>> GetInventory();
 	std::string* GetAbilityCheckList();
-	int GetPlayerHp();
+	int GetHP();
 	int GetNormalAttack();
 	int GetCurrentRoom();
-	int GetPlayerAbilityInt(PlayerBase anAbility); 
-	bool GetIsAlive();
-	void UppdatePlayerStats();
-	void PickUpItem(std::shared_ptr<Items> aItem);
+	int GetAbilityInt(PlayerBase anAbility); 
+	bool IsAlive();
+	void UppdateStats();
+	void PickUpItem(std::shared_ptr<Item> aItem);
 	void UppdateHp(int aChange);
 	void ChangeRoom(int aNewRoom);
-	void ShowPlayerStats();
+	void ShowStats();
 	void EquipItem(int aItemChoise);
 	void InventoryManagement();
-	void PlayerFindPrimeStatBuff(PrimeStats aPrimeStat, int aStatBuff);
-	void PlayerFindSecondaryStatBuff(SecondaryStats aSecondaryStat, int aStatBuff);
+	void FindPrimeStatBuff(PrimeStats aPrimeStat, int aStatBuff);
+	void FindSecondaryStatBuff(SecondaryStats aSecondaryStat, int aStatBuff);
 
 
 private:
-	Equipment myEquipment;
-	std::vector<std::shared_ptr<Items>> myInventory;
-	std::string myAbilityChecks[static_cast<int>(PlayerBase::NumberOfPlayerAbilitys)] = { "Athletics", "Sleight of Hand", "Persuasion" };;
+	Equipment _equipment;
+	std::vector<std::shared_ptr<Item>> _inventory;
+	std::string _ability_checks[static_cast<int>(PlayerBase::NumberOfPlayerAbilitys)] = { "Athletics", "Sleight of Hand", "Persuasion" };;
 	int myCurrentRoom;
 	
-	const int myBaseStrength = static_cast<int>(PlayerBase::PlayerBaseStrength);
-	const int myBaseDexterety = static_cast<int>(PlayerBase::PlayerBaseDexterety);
-	const int myBaseDodge = static_cast<int>(PlayerBase::PlayerBaseDodge);
-	const int myBaseCharisma = static_cast<int>(PlayerBase::PlayerBaseCharisma);
-	const int myBaseArmor = static_cast<int>(PlayerBase::PlayerBaseArmor);
+	const int _base_strength = static_cast<int>(PlayerBase::PlayerBaseStrength);
+	const int _base_dexterety = static_cast<int>(PlayerBase::PlayerBaseDexterety);
+	const int _base_dodge = static_cast<int>(PlayerBase::PlayerBaseDodge);
+	const int _base_charisma = static_cast<int>(PlayerBase::PlayerBaseCharisma);
+	const int _base_armor = static_cast<int>(PlayerBase::PlayerBaseArmor);
 
-	int myStrength;
-	int myDexterety;
-	int myDodge;
-	int myCharisma;
-	int myArmor;
+	int _strength;
+	int _dexterety;
+	int _dodge;
+	int _charisma;
+	int _armor;
 
-	int myHp;
-	int myMaxHp;
-	int myBaseDamage;
-	int myCarryingCapacity;
-	int myAthletics;
-	int mySlightOfHand;
-	int myPersuasion;
+	int _hp;
+	int _max_hp;
+	int _base_damage;
+	int _carrying_capacity;
+	int _athletics;
+	int _slight_of_hand;
+	int _persuasion;
 
-	bool myIsAlive;
+	bool _is_alive;
 };
 

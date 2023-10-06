@@ -2,112 +2,112 @@
 #include <memory>
 #include "Room.h"
 #include "UI.h"
-#include "Quick functions.h"
+#include "Quick_functions.h"
 #include "Door.h"
 #include "Enums.h"
 #include "Player.h"
-#include "Events.h"
+#include "Event.h"
 
-Room::Room(int aRoomNr, std::string aRoomType)
+Room::Room(int room_nr, std::string _room_type)
 {
-	myEnemyList;
-	myConnectingDoors;
-	myItemList;
+	_enemy_list;
+	_connecting_doors;
+	_item_list;
 	
-	myRoomType = aRoomType;
-	myRoomNr = aRoomNr;
-	myRoomName = " ? ? ? ";
+	_room_type = _room_type;
+	_room_nr = room_nr;
+	_room_name = " ? ? ? ";
 	
-	myRoomExplored = false;
-	myLastBossRoom = false;
-	myLastBossDefeted = false;
-	myEvent = nullptr;
+	_room_explored = false;
+	_last_boss_room = false;
+	_last_boss_defeted = false;
+	_event = nullptr;
 	
-	if (myRoomType == "Random")
+	if (_room_type == "Random")
 	{
-		myRoomType = "Normal";
+		_room_type = "Normal";
 	}
 
-	if (myRoomType == "Normal")
+	if (_room_type == "Normal")
 	{
 		CreateEnemys();
 		CreateItems(RandomNumber(0, static_cast<int>(RoomBase::MaxNumberOfItemsDropt)));
-		myNumberOfEnemeis = static_cast<int>(myEnemyList.size());
-		myRoomName = "Corridor";
+		_number_of_enemeis = static_cast<int>(_enemy_list.size());
+		_room_name = "Corridor";
 		if (RandomNumber(0, static_cast<int>(RoomBase::ChansOfGettingAEvent)) == 0)
 		{
-			myEvent = std::make_shared<Events>();
+			_event = std::make_shared<Event>();
 		}
 	}
-	else if (myRoomType == "Boss")
+	else if (_room_type == "Boss")
 	{
 
-		myNumberOfEnemeis = static_cast<int>(myEnemyList.size());
-		myLastBossRoom = true;
-		myRoomName = "Boss Room";
+		_number_of_enemeis = static_cast<int>(_enemy_list.size());
+		_last_boss_room = true;
+		_room_name = "Boss Room";
 
 	}
-	else if (myRoomType == "Start")
+	else if (_room_type == "Start")
 	{
-		myEvent = std::make_shared<Events>();
+		_event = std::make_shared<Event>();
 		CreateItems(RandomNumber(0, 1));
-		myRoomName = "Entrance";
+		_room_name = "Entrance";
 	}
 }
 
 std::string Room::GetRoomName()
 {
-	return myRoomName;
+	return _room_name;
 }
 
 bool Room::GetRoomExplored()
 {
-	return myRoomExplored;
+	return _room_explored;
 }
 
 bool Room::LastBossDefeted()
 {
-	return myLastBossDefeted;
+	return _last_boss_defeted;
 }
 
-void Room::CheckConnectingDoors(std::vector<std::shared_ptr<Door>> aListOfDoors)
+void Room::CheckConnectingDoors(std::vector<std::shared_ptr<Door>> list_of_doors)
 {
-	myConnectingDoors.clear();
-	for (int i = 0; i < aListOfDoors.size(); i++)
+	_connecting_doors.clear();
+	for (int i = 0; i < list_of_doors.size(); i++)
 	{
-		if (aListOfDoors[i]->GetIsInCurrentRoom(myRoomNr) == true && myConnectingDoors.size() < static_cast<int>(DoorBase::maxDoorsInARoom))
+		if (list_of_doors[i]->IsInCurrentRoom(_room_nr) == true && _connecting_doors.size() < static_cast<int>(DoorBase::maxDoorsInARoom))
 		{
-			myConnectingDoors.push_back(aListOfDoors[i]);
+			_connecting_doors.push_back(list_of_doors[i]);
 		}
 	}
 }
 
 bool Room::LivingEnemies()
 {
-	bool livingEnemie = false;
-	for (int i = 0; i < myEnemyList.size(); i++)
+	bool living_enemie = false;
+	for (int i = 0; i < _enemy_list.size(); i++)
 	{
-		if (myEnemyList[i].GetIsAlive() == true)
+		if (_enemy_list[i].IsAlive() == true)
 		{
-			livingEnemie = true;
+			living_enemie = true;
 		}
 	}
-	return livingEnemie;
+	return living_enemie;
 }
 
 void Room::CreateEnemys()
 {
-	int numberOfEnemeis = RandomNumber(static_cast<int>(RoomBase::MinNumberOfEnemis), static_cast<int>(RoomBase::MaxNumberOfEnemis));
-		for (int i = 0; i < numberOfEnemeis; i++)
+	int number_of_enemeis = RandomNumber(static_cast<int>(RoomBase::MinNumberOfEnemis), static_cast<int>(RoomBase::MaxNumberOfEnemis));
+		for (int i = 0; i < number_of_enemeis; i++)
 		{
 			Enemy enemy;
-			myEnemyList.push_back(enemy);
+			_enemy_list.push_back(enemy);
 		}
 }
 
 void Room::CreateItems(int aAmountOfItems)
 {
-	std::vector<ItemType> randomItemType =
+	std::vector<ItemType> random_item_type =
 	{
 		ItemType::Dagger,
 		ItemType::Sword,
@@ -115,43 +115,43 @@ void Room::CreateItems(int aAmountOfItems)
 		ItemType::Helm,
 		ItemType::Armor,
 	};
-	int numberOfItems = RandomNumber(static_cast<int>(RoomBase::MinNumberOfItemsDropt), static_cast<int>(RoomBase::MaxNumberOfItemsDropt));
-	for (int i = 0; i < numberOfItems; i++)
+	int number_of_items = RandomNumber(static_cast<int>(RoomBase::MinNumberOfItemsDropt), static_cast<int>(RoomBase::MaxNumberOfItemsDropt));
+	for (int i = 0; i < number_of_items; i++)
 	{
-		std::shared_ptr<Items> items = std::make_shared <Items>(randomItemType[RandomNumber(0, static_cast<int>(randomItemType.size()) - 1)]);
-		myItemList.push_back(items);
+		std::shared_ptr<Item> items = std::make_shared <Item>(random_item_type[RandomNumber(0, static_cast<int>(random_item_type.size()) - 1)]);
+		_item_list.push_back(items);
 	}
 }
 
-void Room::Combat(Player& aPlayer)
+void Room::Combat(Player& player)
 {
 	ClearMenu();
 	int playerTarget = 0;
-	while (aPlayer.GetIsAlive() == true && LivingEnemies() == true)
+	while (player.IsAlive() == true && LivingEnemies() == true)
 	{
-		ShowEnemy(myEnemyList);
-		playerTarget = ChoseEnemy(myEnemyList);
-		myEnemyList[playerTarget].UppdateHp(aPlayer.GetNormalAttack()); 
+		ShowEnemy(_enemy_list);
+		playerTarget = ChoseEnemy(_enemy_list);
+		_enemy_list[playerTarget].UppdateHp(player.GetNormalAttack()); 
 		
-		for (int i = 0; i < myNumberOfEnemeis; i++)
+		for (int i = 0; i < _number_of_enemeis; i++)
 		{
-			if (myEnemyList[i].GetEnemyHp() >= 0)
+			if (_enemy_list[i].GetHP() >= 0)
 			{
 				Sleep();
 				PrintInMenu("The enemy is retaliating and attacking you!");
-				aPlayer.UppdateHp(myEnemyList[i].GetNormalAttack());
-				aPlayer.ShowPlayerStats();
+				player.UppdateHp(_enemy_list[i].GetNormalAttack());
+				player.ShowStats();
 			}
 		}
 	}
 	Sleep(1000);
-	ClearGame();
+	ClearGameView();
 }
 
-void Room::Explore(Player& aPlayer)
+void Room::Explore(Player& player)
 {
 	int playerChoiseInMenu = 0;
-	if (myEvent != nullptr)
+	if (_event)
 	{
 		std::string awnsers[2] = { "Yes", "No" };
 		SetCursorPosition(static_cast<int>(MenuOptions::gameStartX), static_cast<int>(MenuOptions::gameStartY));
@@ -164,7 +164,7 @@ void Room::Explore(Player& aPlayer)
 		{
 			PrintInMenu("You walk towards the object and tuch it...");
 			Sleep();
-			myEvent->GetEventDescription();
+			_event->GetEventDescription();
 			break;
 		}
 		case 1:
@@ -178,7 +178,7 @@ void Room::Explore(Player& aPlayer)
 		}
 	}
 
-	if (static_cast<int>(myItemList.size()) <= 0)
+	if (static_cast<int>(_item_list.size()) <= 0)
 	{
 		PrintInMenu("You don't find any items in the room!");
 		Sleep();
@@ -188,15 +188,15 @@ void Room::Explore(Player& aPlayer)
 	playerChoiseInMenu = 0;
 	while (true)
 	{
-		int playerTryPickUp = showItems(myItemList, playerChoiseInMenu);
-		if (playerTryPickUp >= myItemList.size())
+		int playerTryPickUp = showItems(_item_list, playerChoiseInMenu);
+		if (playerTryPickUp >= _item_list.size())
 		{
 			return;
 		}
 		else
 		{
-			aPlayer.PickUpItem(myItemList[playerTryPickUp]);
-			myItemList.erase(myItemList.begin() + playerTryPickUp);
+			player.PickUpItem(_item_list[playerTryPickUp]);
+			_item_list.erase(_item_list.begin() + playerTryPickUp);
 		}
 	}
 }
@@ -207,31 +207,31 @@ void Room::Loot()
 	Sleep();
 }
 
-void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
+void Room::SwitchRoom(Player& player, std::vector<Room>& room_list)
 {
 	while (true)
 	{
 
-		int doorTry = ShowDoors(myConnectingDoors, aRoomList, myRoomNr);
-		if (myConnectingDoors[doorTry]->GetDoorLockt() == true)
+		int door_try = ShowDoors(_connecting_doors, room_list, _room_nr);
+		if (_connecting_doors[door_try]->IsDoorLocked() == true)
 		{
-			int playerMenuChoise = 0;
+			int user_menu_choise = 0;
 			PrintInMenu("The door is lockt...");
 			Sleep();
-			MenuControll(aPlayer.GetAbilityCheckList(), static_cast<int>(PlayerBase::NumberOfPlayerAbilitys), playerMenuChoise, static_cast<int>(MenuOptions::menyStartY));
+			MenuControll(player.GetAbilityCheckList(), static_cast<int>(PlayerBase::NumberOfPlayerAbilitys), user_menu_choise, static_cast<int>(MenuOptions::menyStartY));
 			ClearMenu();
-			switch (playerMenuChoise)
+			switch (user_menu_choise)
 			{
 				case static_cast<int>(PlayerBase::AthleticsPlayerSkill):
 				{
 					PrintInMenu("You try to break the door open...");
 					Sleep(1500);
-					if ((aPlayer.GetPlayerAbilityInt(PlayerBase::AthleticsPlayerSkill) + RandomNumber(1, 20)) > myConnectingDoors[doorTry]->GetLockDifficultyStr())
+					if ((player.GetAbilityInt(PlayerBase::AthleticsPlayerSkill) + RandomNumber(1, 20)) > _connecting_doors[door_try]->GetLockDifficultyStr())
 					{
-						myConnectingDoors[doorTry]->SetDoorLockt(false);
+						_connecting_doors[door_try]->isDoorLocked(false);
 						PrintInMenu("You break the door open and can walk through");
 						Sleep();
-						aPlayer.ChangeRoom(myConnectingDoors[doorTry]->GetConnectingRoom(myRoomNr));
+						player.ChangeRoom(_connecting_doors[door_try]->GetConnectingRoom(_room_nr));
 						return;
 					}
 					else
@@ -245,12 +245,12 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 				{
 					PrintInMenu("You try to pick the lock...");
 					Sleep(1500);
-					if ((aPlayer.GetPlayerAbilityInt(PlayerBase::SlightOfHandPlayerSkill) + RandomNumber(1, 20)) > myConnectingDoors[doorTry]->GetLockDifficultyDex())
+					if ((player.GetAbilityInt(PlayerBase::SlightOfHandPlayerSkill) + RandomNumber(1, 20)) > _connecting_doors[door_try]->GetLockDifficultyDex())
 					{
 						PrintInMenu("The lock opens and you can walk through");
 						Sleep();
-						myConnectingDoors[doorTry]->SetDoorLockt(false);
-						aPlayer.ChangeRoom(myConnectingDoors[doorTry]->GetConnectingRoom(myRoomNr));
+						_connecting_doors[door_try]->isDoorLocked(false);
+						player.ChangeRoom(_connecting_doors[door_try]->GetConnectingRoom(_room_nr));
 						return;
 					}
 					else
@@ -271,8 +271,8 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 						PrintInMenu("You're not quite sure how...");
 						Sleep();
 						PrintInMenu("You choose to take the chance to go through!");
-						myConnectingDoors[doorTry]->SetDoorLockt(false);
-						aPlayer.ChangeRoom(myConnectingDoors[doorTry]->GetConnectingRoom(myRoomNr));
+						_connecting_doors[door_try]->isDoorLocked(false);
+						player.ChangeRoom(_connecting_doors[door_try]->GetConnectingRoom(_room_nr));
 						return;
 					}
 					else
@@ -286,9 +286,9 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 				break;
 			}
 		}
-		else if (myConnectingDoors[doorTry]->GetDoorLockt() == false)
+		else if (_connecting_doors[door_try]->IsDoorLocked() == false)
 		{
-			aPlayer.ChangeRoom(myConnectingDoors[doorTry]->GetConnectingRoom(myRoomNr));
+			player.ChangeRoom(_connecting_doors[door_try]->GetConnectingRoom(_room_nr));
 			return;
 		}
 	}
@@ -296,16 +296,16 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 
 void Room::RoomOptions(Player& aPlayer, std::vector<Room>& aRoomList)
 {
-	std::string roomOptions[] = { "Explore", "Loot", "Inventory", "Switch Room"};
-	int playerChoise = 0;
+	std::string room_options[] = { "Explore", "Loot", "Inventory", "Switch Room"};
+	int player_choise = 0;
 	
 	while (true)
 	{
-		aPlayer.ShowPlayerStats();
-		MenuControll(roomOptions, static_cast<int>(size(roomOptions)), playerChoise, static_cast<int>(MenuOptions::menyStartY));
+		aPlayer.ShowStats();
+		MenuControll(room_options, static_cast<int>(size(room_options)), player_choise, static_cast<int>(MenuOptions::menyStartY));
 		ClearMenu();
-		ClearGame();
-		switch (playerChoise)
+		ClearGameView();
+		switch (player_choise)
 		{
 			case static_cast<int>(RoomBase::MenuExplore):
 			{
@@ -334,17 +334,17 @@ void Room::RoomOptions(Player& aPlayer, std::vector<Room>& aRoomList)
 
 void Room::RoomDescription()
 {
-	if (myRoomName == "Entrance")
+	if (_room_name == "Entrance")
 	{
 		PrintInMenu("You are in the entrance of the dungeon, the path to the surface is blockt!");
 		Pause();
 	}
-	else if (myRoomName == "Corridor")
+	else if (_room_name == "Corridor")
 	{
 		PrintInMenu("It is a long and dark corridor, you can hear something up ahead...");
 		Pause();
 	}
-	else if (myRoomName == "Boss Room")
+	else if (_room_name == "Boss Room")
 	{
 		PrintInMenu("You feel like something big might jump at you...");
 		Pause();
@@ -356,19 +356,19 @@ void Room::EnterRoom(Player& aPlayer, std::vector<std::shared_ptr<Door>> aListOf
 
 	RoomDescription();
 	Sleep();
-	myRoomExplored = true;
+	_room_explored = true;
 	if (LivingEnemies())
 	{
 		Combat(aPlayer);
-		ClearGame();
+		ClearGameView();
 	}
 
-	if (myLastBossRoom == true && aPlayer.GetIsAlive() == true)
+	if (_last_boss_room == true && aPlayer.IsAlive() == true)
 	{
-		myLastBossDefeted = true;
+		_last_boss_defeted = true;
 		return;
 	}
-	else if (aPlayer.GetIsAlive() == true)
+	else if (aPlayer.IsAlive() == true)
 	{
 		PrintInMenu("All enemys have been defeted...");
 		CheckConnectingDoors(aListOfDoors);

@@ -1,66 +1,55 @@
 #include "Door.h"
-#include "Quick functions.h"
+#include "Quick_functions.h"
 
-Door::Door(int aRoomOne, int aRoomTwo)
+Door::Door(int room_one, int room_two)
 {
-	myConnectingRoomOne = aRoomOne;
-	myConnectingRoomTwo = aRoomTwo;
-	myLockDifficultyStr = 0;
-	myLockDifficultyDex = 0;
-	myDoorLockt = RandomNumber(0, 1) == 1 ? true : false;
-	if (myDoorLockt == true)
+	_connecting_room_one = room_one;
+	_connecting_room_two = room_two;
+	_lock_difficulty_str = 0;
+	_lock_difficulty_dex = 0;
+	_door_lockt = RandomNumber(0, 1) == 1 ? true : false;
+	if (_door_lockt)
 	{
-		myLockDifficultyStr = RandomNumber(20, 40);
-		myLockDifficultyDex = RandomNumber(20, 30);
+		_lock_difficulty_str = RandomNumber(20, 40);
+		_lock_difficulty_dex = RandomNumber(20, 30);
 	}
 }
 
 int Door::GetLockDifficultyStr()
 {
-	return myLockDifficultyStr;
+	return _lock_difficulty_str;
 }
 
 int Door::GetLockDifficultyDex()
 {
-	return myLockDifficultyDex;
+	return _lock_difficulty_dex;
 }
 
-int Door::GetConnectingRoom(int aCurrentRoom)
+int Door::GetConnectingRoom(int current_room)
 {
-	if (aCurrentRoom == myConnectingRoomOne)
+	if (current_room == _connecting_room_one)
 	{
-		return myConnectingRoomTwo;
+		return _connecting_room_two;
 	}
-	else if (aCurrentRoom == myConnectingRoomTwo)
+	else if (current_room == _connecting_room_two)
 	{
-		return myConnectingRoomOne;
+		return _connecting_room_one;
 	}
 	
 	return -1;
 }
 
-
-bool Door::GetIsInCurrentRoom(int aCurrentRoom)
+bool Door::IsInCurrentRoom(int _current_room)
 {
-	if (aCurrentRoom == myConnectingRoomOne)
-	{
-		return true;
-	}
-	else if (aCurrentRoom == myConnectingRoomTwo)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (_current_room == _connecting_room_one || _current_room == _connecting_room_two);
 }
 
-bool Door::GetDoorLockt()
+bool Door::IsDoorLocked()
 {
-	return myDoorLockt;
+	return _door_lockt;
 }
-void Door::SetDoorLockt(bool aDoorLockt)
+
+void Door::isDoorLocked(bool aDoorLockt)
 {
-	myDoorLockt = aDoorLockt;
+	_door_lockt = aDoorLockt;
 }

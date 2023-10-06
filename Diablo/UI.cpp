@@ -1,12 +1,12 @@
 #include "UI.h"
-#include "Quick functions.h"
+#include "Quick_functions.h"
 #include <Windows.h>
 #include <vector>
 #include "Enemy.h"
 #include "Door.h"
 #include "Room.h"
 #include "Enums.h"
-#include "Items.h"
+#include "Item.h"
 
 
 
@@ -38,13 +38,13 @@ void DrawFrame()
 	std::cout << std::endl;
 }
 
-void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMenu, int aStartingYPosision)
+void MenuControll(std::string menu_items[], int menu_size, int& users_menu_choise, int starting_y_posision)
 {
 	while (true)
 	{
 		ClearMenu();
 		SetCursorPosition(static_cast<int>(MenuOptions::menyStartX), static_cast<int>(MenuOptions::menyStartY));
-		for (int i = 0; i < aMenuSize; ++i)
+		for (int i = 0; i < menu_size; ++i)
 		{
 			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 			CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -56,16 +56,16 @@ void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMe
 				int y = cursorPosition.Y;
 				SetCursorPosition(x, y);
 			}
-			if (i == aPlayerChoiseInMenu)
+			if (i == users_menu_choise)
 			{
 				SetColor(ColorInt::GreenColorText);
-				std::cout << "\t" << aMenuList[i] << "\t <---" << std::endl;
+				std::cout << "\t" << menu_items[i] << "\t <---" << std::endl;
 			}
 			else
 			{
 				
 				SetColor(ColorInt::WhiteColorText);
-				std::cout << aMenuList[i] << std::endl;
+				std::cout << menu_items[i] << std::endl;
 			}
 		}
 		SetColor(ColorInt::WhiteColorText);
@@ -73,25 +73,25 @@ void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMe
 		{
 		case MenuOptions::MenuListUp:
 		{
-			if (aPlayerChoiseInMenu > 0)
+			if (users_menu_choise > 0)
 			{
-				aPlayerChoiseInMenu--;
+				users_menu_choise--;
 			}
 			else
 			{
-				aPlayerChoiseInMenu = aMenuSize - 1;
+				users_menu_choise = menu_size - 1;
 			}
 			break;
 		}
 		case MenuOptions::MenuListDown:
 		{
-			if (aPlayerChoiseInMenu < aMenuSize - 1)
+			if (users_menu_choise < menu_size - 1)
 			{
-				aPlayerChoiseInMenu++;
+				users_menu_choise++;
 			}
 			else
 			{
-				aPlayerChoiseInMenu = 0;
+				users_menu_choise = 0;
 			}
 			break;
 		}
@@ -104,11 +104,11 @@ void MenuControll(std::string aMenuList[], int aMenuSize, int& aPlayerChoiseInMe
 	}
 }
 
-int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoiseInMenu)
+int showItems(std::vector<std::shared_ptr<Item>> items, int& player_choise_in_menu)
 {
-	if (aPlayerChoiseInMenu > static_cast<int>(aListOfItems.size()))
+	if (player_choise_in_menu > static_cast<int>(items.size()))
 	{
-		aPlayerChoiseInMenu--;
+		player_choise_in_menu--;
 	}
 	while (true)
 	{
@@ -116,9 +116,9 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 		int x;
 		int y;
 
-		ClearGame();
+		ClearGameView();
 		SetCursorPosition(static_cast<int>(MenuOptions::gameStartX), static_cast<int>(MenuOptions::gameStartX) + 1);
-		for (int i = 0; i < static_cast<int>(aListOfItems.size()); ++i)
+		for (int i = 0; i < static_cast<int>(items.size()); ++i)
 		{
 			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 			CONSOLE_SCREEN_BUFFER_INFO csbi; 
@@ -131,10 +131,10 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 				SetCursorPosition(x, y);
 			}
 
-			if (i == aPlayerChoiseInMenu)
+			if (i == player_choise_in_menu)
 			{
 				SetColor(ColorInt::GreenColorText);
-				std::cout << "\t" << ItemTypeToString(aListOfItems[i]->GetItemType()) << " <---";
+				std::cout << "\t" << toString(items[i]->GetItemType()) << " <---";
 				SetColor(ColorInt::WhiteColorText);
 
 				if (GetConsoleScreenBufferInfo(hConsole, &csbi))
@@ -144,7 +144,7 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 					y = cursorPosition.Y;
 					SetCursorPosition(x, y);
 				}
-				std::cout << PrimeStatToString(aListOfItems[i]->GetPrimeStat()) << ": +" << aListOfItems[i]->GetPrimeStatBuff();
+				std::cout << toString(items[i]->GetPrimeStat()) << ": +" << items[i]->GetPrimeStatBuff();
 				
 				if (GetConsoleScreenBufferInfo(hConsole, &csbi))
 				{
@@ -153,13 +153,13 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 					y = cursorPosition.Y;
 					SetCursorPosition(x, y);
 				}
-				std::cout << SecondaryStatToString(aListOfItems[i]->GetSecondaryStat()) << ": +" <<aListOfItems[i]->GetSecondaryStatBuff() << std::endl;
+				std::cout << toString(items[i]->GetSecondaryStat()) << ": +" <<items[i]->GetSecondaryStatBuff() << std::endl;
 			}
 			else
 			{
 
 				SetColor(ColorInt::WhiteColorText);
-				std::cout << ItemTypeToString(aListOfItems[i]->GetItemType());
+				std::cout << toString(items[i]->GetItemType());
 				
 				if (GetConsoleScreenBufferInfo(hConsole, &csbi))
 				{
@@ -168,7 +168,7 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 					y = cursorPosition.Y;
 					SetCursorPosition(x, y);
 				}
-				std::cout << PrimeStatToString(aListOfItems[i]->GetPrimeStat()) << ": +" << aListOfItems[i]->GetPrimeStatBuff();
+				std::cout << toString(items[i]->GetPrimeStat()) << ": +" << items[i]->GetPrimeStatBuff();
 				
 				if (GetConsoleScreenBufferInfo(hConsole, &csbi))
 				{
@@ -177,7 +177,7 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 					y = cursorPosition.Y;
 					SetCursorPosition(x, y);
 				}
-				std::cout << SecondaryStatToString(aListOfItems[i]->GetSecondaryStat()) << ": +" << aListOfItems[i]->GetSecondaryStatBuff() << std::endl;
+				std::cout << toString(items[i]->GetSecondaryStat()) << ": +" << items[i]->GetSecondaryStatBuff() << std::endl;
 
 			}
 		}
@@ -193,7 +193,7 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 			SetCursorPosition(x, y);
 		}
 
-		if (aPlayerChoiseInMenu == static_cast<int>(aListOfItems.size()))
+		if (player_choise_in_menu == static_cast<int>(items.size()))
 		{
 			SetColor(ColorInt::GreenColorText);
 			std::cout << "\tReturn  <---" << std::endl;
@@ -210,31 +210,31 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 		{
 		case MenuOptions::MenuListUp:
 		{
-			if (aPlayerChoiseInMenu > 0)
+			if (player_choise_in_menu > 0)
 			{
-				aPlayerChoiseInMenu--;
+				player_choise_in_menu--;
 			}
 			else
 			{
-				aPlayerChoiseInMenu = static_cast<int>(aListOfItems.size());
+				player_choise_in_menu = static_cast<int>(items.size());
 			}
 			break;
 		}
 		case MenuOptions::MenuListDown:
 		{
-			if (aPlayerChoiseInMenu < static_cast<int>(aListOfItems.size()))
+			if (player_choise_in_menu < static_cast<int>(items.size()))
 			{
-				aPlayerChoiseInMenu++;
+				player_choise_in_menu++;
 			}
 			else
 			{
-				aPlayerChoiseInMenu = 0;
+				player_choise_in_menu = 0;
 			}
 			break;
 		}
 		case MenuOptions::MenuListOption:
 		{
-			return aPlayerChoiseInMenu;
+			return player_choise_in_menu;
 			break;
 		}
 		}
@@ -243,13 +243,13 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 
 void ShowEnemy(std::vector<Enemy>& aList)
 {
-	ClearGame();
+	ClearGameView();
 	int ofSetX = 3;
 	for (int i = 0; i < aList.size(); i++)
 	{
-		if (aList[i].GetIsAlive() == true)
+		if (aList[i].IsAlive() == true)
 		{
-			aList[i].PrintEnemySprite(static_cast<int>(MenuOptions::gameStartX) + ofSetX, static_cast<int>(MenuOptions::gameStartY) + 2);
+			aList[i].PrintSprite(static_cast<int>(MenuOptions::gameStartX) + ofSetX, static_cast<int>(MenuOptions::gameStartY) + 2);
 			ofSetX += aList[i].GetSpriteSizeX() + 10;
 		}
 		else
@@ -311,7 +311,7 @@ int ChoseEnemy(std::vector<Enemy>& aList)
 		}
 		case MenuOptions::MenuListOption:
 		{
-			if (aList[playerChoise].GetIsAlive() == true)
+			if (aList[playerChoise].IsAlive() == true)
 			{
 				return playerChoise;
 			}
@@ -339,7 +339,7 @@ int ShowDoors(std::vector<std::shared_ptr<Door>> aVectorOfDoors, std::vector<Roo
 	while (true)
 	{
 		int extraSpace = 0;
-		ClearGame();
+		ClearGameView();
 
 		for (int i = 0; i < aVectorOfDoors.size(); i++)
 		{

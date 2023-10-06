@@ -1,27 +1,27 @@
-#include "Items.h"
-#include "Quick functions.h"
+#include "Item.h"
+#include "Quick_functions.h"
 #include "Enums.h"
 #include <string>
 #include <vector>
 
-Items::Items(ItemType aItems)
+Item::Item(ItemType items)
 {
-	myItemType = aItems;
-	myLevel = SetLevel();
+	_item_type = items;
+	_level = SetLevel();
 	SetStats();
 }
 
-int Items::SetLevel()
+int Item::SetLevel()
 {
 	int level = RandomNumber(1, 100);
 	return level >= static_cast<int>(ItemBase::ProcentalChansLvlThree) ? 3 : level >= static_cast<int>(ItemBase::procentalChansLvlTwo) ? 2 : 1;
 }
-void Items::SetStats()
+void Item::SetStats()
 {
 	std::vector<PrimeStats> randomPrimeStat;
 	std::vector<SecondaryStats> randomSecondaryStats;
 	int buffDivider = RandomNumber(1, 5);
-	switch (myItemType)
+	switch (_item_type)
 	{
 	case ItemType::Dagger:
 
@@ -40,11 +40,11 @@ void Items::SetStats()
 			SecondaryStats::SlightOfHand
 		};
 
-		myItemSlot = ItemSlot::Weapon;
-		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
-		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
-		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
+		_item_slot = ItemSlot::Weapon;
+		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
+		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
 		break;
 	case ItemType::Sword:
 
@@ -63,11 +63,11 @@ void Items::SetStats()
 			SecondaryStats::MaxHp
 		};
 
-		myItemSlot = ItemSlot::Weapon;
-		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
-		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
-		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
+		_item_slot = ItemSlot::Weapon;
+		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
+		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
 		break;
 	case ItemType::GreatSword: 
 
@@ -87,11 +87,11 @@ void Items::SetStats()
 			SecondaryStats::Athletics,
 		};
 
-		myItemSlot = ItemSlot::Weapon;
-		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
-		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
-		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
+		_item_slot = ItemSlot::Weapon;
+		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
+		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
 		break;
 	case ItemType::Helm:
 
@@ -110,11 +110,11 @@ void Items::SetStats()
 			SecondaryStats::Persuasion,
 		};
 
-		myItemSlot = ItemSlot::Helm;
-		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
-		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
-		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
+		_item_slot = ItemSlot::Helm;
+		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
+		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
 		break;
 	case ItemType::Armor:
 
@@ -134,43 +134,43 @@ void Items::SetStats()
 			SecondaryStats::Athletics,
 		};
 
-		myItemSlot = ItemSlot::Armor;
-		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
-		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
-		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
+		_item_slot = ItemSlot::Armor;
+		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
+		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
 		break;
 	default:
 		break;
 	}
 }
 
-PrimeStats Items::GetPrimeStat()
+PrimeStats Item::GetPrimeStat()
 {
-	return myPrimeStat;
+	return _prime_stat;
 }
 
-SecondaryStats Items::GetSecondaryStat()
+SecondaryStats Item::GetSecondaryStat()
 {
-	return mySecondaryStat;
+	return _secondary_stat;
 }
 
-int Items::GetPrimeStatBuff()
+int Item::GetPrimeStatBuff()
 {
-	return myPrimeStatBuff;
+	return _prime_stat_buff;
 }
 
-int Items::GetSecondaryStatBuff() 
+int Item::GetSecondaryStatBuff() 
 {
-	return mySecondaryStatBuff;
+	return _secondary_stat_buff;
 }
 
-ItemType Items::GetItemType()
+ItemType Item::GetItemType()
 {
-	return myItemType;
+	return _item_type;
 }
 
-ItemSlot Items::GetItemSlot()
+ItemSlot Item::GetItemSlot()
 {
-	return myItemSlot;
+	return _item_slot;
 }

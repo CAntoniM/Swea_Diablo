@@ -6,6 +6,7 @@
 #include "Door.h"
 #include "Enums.h"
 #include "Player.h"
+#include "Events.h"
 
 Room::Room(int aRoomNr, std::string aRoomType)
 {
@@ -20,6 +21,7 @@ Room::Room(int aRoomNr, std::string aRoomType)
 	myRoomExplored = false;
 	myLastBossRoom = false;
 	myLastBossDefeted = false;
+	myEvent = nullptr;
 	
 	if (myRoomType == "Random")
 	{
@@ -32,6 +34,10 @@ Room::Room(int aRoomNr, std::string aRoomType)
 		CreateItems(RandomNumber(0, static_cast<int>(RoomBase::MaxNumberOfItemsDropt)));
 		myNumberOfEnemeis = static_cast<int>(myEnemyList.size());
 		myRoomName = "Corridor";
+		if (RandomNumber(0, static_cast<int>(RoomBase::ChansOfGettingAEvent)) == 0)
+		{
+			myEvent = std::make_shared<Events>();
+		}
 	}
 	else if (myRoomType == "Boss")
 	{
@@ -43,6 +49,7 @@ Room::Room(int aRoomNr, std::string aRoomType)
 	}
 	else if (myRoomType == "Start")
 	{
+		myEvent = std::make_shared<Events>();
 		CreateItems(RandomNumber(0, 1));
 		myRoomName = "Entrance";
 	}
@@ -111,7 +118,6 @@ void Room::CreateItems(int aAmountOfItems)
 	int numberOfItems = RandomNumber(static_cast<int>(RoomBase::MinNumberOfItemsDropt), static_cast<int>(RoomBase::MaxNumberOfItemsDropt));
 	for (int i = 0; i < numberOfItems; i++)
 	{
-		//Items items(randomItemType[RandomNumber(0, static_cast<int>(randomItemType.size()) - 1)]);
 		std::shared_ptr<Items> items = std::make_shared <Items>(randomItemType[RandomNumber(0, static_cast<int>(randomItemType.size()) - 1)]);
 		myItemList.push_back(items);
 	}
@@ -140,20 +146,46 @@ void Room::Combat(Player& aPlayer)
 	}
 	Sleep(1000);
 	ClearGame();
-	PrintInMenu("All enemys have been defeted...");
-	Sleep();
 }
 
 void Room::Explore(Player& aPlayer)
 {
+	int playerChoiseInMenu = 0;
+	if (myEvent != nullptr)
+	{
+		std::string awnsers[2] = { "Yes", "No" };
+		SetCursorPosition(static_cast<int>(MenuOptions::gameStartX), static_cast<int>(MenuOptions::gameStartY));
+		Print("You see somthing wierd in the room, do you wana interact with it?");
+		MenuControll(awnsers, 2, playerChoiseInMenu, static_cast<int>(MenuOptions::menyStartY));
+		ClearMenu();
+		switch (playerChoiseInMenu)
+		{
+		case 0:
+		{
+			PrintInMenu("You walk towards the object and tuch it...");
+			Sleep();
+			myEvent->GetEventDescription();
+			break;
+		}
+		case 1:
+		{
+			PrintInMenu("You chose to ignore it and search for some items instead");
+			Sleep();
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
 	if (static_cast<int>(myItemList.size()) <= 0)
 	{
-		PrintInMenu("You don't find anything in the room!");
+		PrintInMenu("You don't find any items in the room!");
 		Sleep();
 		return;
 	}
 
-	int playerChoiseInMenu = 0;
+	playerChoiseInMenu = 0;
 	while (true)
 	{
 		int playerTryPickUp = showItems(myItemList, playerChoiseInMenu);
@@ -231,8 +263,24 @@ void Room::SwitchRoom(Player& aPlayer, std::vector<Room>& aRoomList)
 				{
 					PrintInMenu("You try to convins the door to open...");
 					Sleep();
-					PrintInMenu("It looks like it's not working");
-					break;
+
+					if (RandomNumber(1, 20) == 20)
+					{
+						PrintInMenu("The door opens...");
+						Sleep();
+						PrintInMenu("You're not quite sure how...");
+						Sleep();
+						PrintInMenu("You choose to take the chance to go through!");
+						myConnectingDoors[doorTry]->SetDoorLockt(false);
+						aPlayer.ChangeRoom(myConnectingDoors[doorTry]->GetConnectingRoom(myRoomNr));
+						return;
+					}
+					else
+					{
+						PrintInMenu("It looks like it's not working");
+						Sleep();
+						break;
+					}
 				}
 			default:
 				break;
@@ -307,6 +355,7 @@ void Room::EnterRoom(Player& aPlayer, std::vector<std::shared_ptr<Door>> aListOf
 {
 
 	RoomDescription();
+	Sleep();
 	myRoomExplored = true;
 	if (LivingEnemies())
 	{
@@ -321,6 +370,7 @@ void Room::EnterRoom(Player& aPlayer, std::vector<std::shared_ptr<Door>> aListOf
 	}
 	else if (aPlayer.GetIsAlive() == true)
 	{
+		PrintInMenu("All enemys have been defeted...");
 		CheckConnectingDoors(aListOfDoors);
 		RoomOptions(aPlayer, aRoomList);
 	}

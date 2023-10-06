@@ -59,26 +59,97 @@ void Player::PlayerFindPrimeStatBuff(PrimeStats aPrimeStat, int aStatBuff)
 	}
 }
 
+void Player::PlayerFindSecondaryStatBuff(SecondaryStats aSecondaryStat, int aStatBuff)
+{
+	switch (aSecondaryStat)
+	{
+	case SecondaryStats::Strength:
+		myStrength += aStatBuff;
+		break;
+
+	case SecondaryStats::Dexterety:
+		myDexterety += aStatBuff;
+		break;
+
+	case SecondaryStats::Charisma:
+		myCharisma += aStatBuff;
+		break;
+
+	case SecondaryStats::MaxHp:
+		myHp += aStatBuff;
+		break;
+
+	case SecondaryStats::Damage:
+		myBaseDamage += aStatBuff;
+		break;
+	
+	case SecondaryStats::Athletics:
+		myAthletics += aStatBuff;
+		break;
+
+	case SecondaryStats::SlightOfHand:
+		mySlightOfHand += aStatBuff;
+		break;
+	
+	case SecondaryStats::Persuasion:
+		myPersuasion += aStatBuff;
+		break;
+
+	case SecondaryStats::Armor:
+		myArmor += aStatBuff;
+		break;
+	default:
+		break;
+	}
+}
+
 void Player::UppdatePlayerStats()
 {
+	float tempHp = static_cast<float>(myHp) / static_cast<float>(myMaxHp);
+
 
 	myStrength = myBaseStrength;
 	myDexterety = myBaseDexterety;
 	myDodge = myBaseDodge;
 	myCharisma = myBaseCharisma;
 
+	myHp				= static_cast<int>(PlayerBase::ResetStats);
+	myBaseDamage		= static_cast<int>(PlayerBase::ResetStats);
+	myCarryingCapacity	= static_cast<int>(PlayerBase::ResetStats);
+	myAthletics			= static_cast<int>(PlayerBase::ResetStats);
+	mySlightOfHand		= static_cast<int>(PlayerBase::ResetStats);
+	myPersuasion		= static_cast<int>(PlayerBase::ResetStats);
+
+
+
 	if (myEquipment.GetEquipmentWeapon() != nullptr)
 	{
 		PlayerFindPrimeStatBuff(myEquipment.GetEquipmentWeapon()->GetPrimeStat(), myEquipment.GetEquipmentWeapon()->GetPrimeStatBuff());
+		PlayerFindSecondaryStatBuff(myEquipment.GetEquipmentWeapon()->GetSecondaryStat(), myEquipment.GetEquipmentWeapon()->GetSecondaryStatBuff());
 	}
 	if (myEquipment.GetEquipmentHelm() != nullptr)
 	{
 		PlayerFindPrimeStatBuff(myEquipment.GetEquipmentHelm()->GetPrimeStat(), myEquipment.GetEquipmentHelm()->GetPrimeStatBuff());
+		PlayerFindSecondaryStatBuff(myEquipment.GetEquipmentHelm()->GetSecondaryStat(), myEquipment.GetEquipmentHelm()->GetSecondaryStatBuff());
+
 	}
 	if (myEquipment.GetEquipmentArmor() != nullptr)
 	{
 		PlayerFindPrimeStatBuff(myEquipment.GetEquipmentArmor()->GetPrimeStat(), myEquipment.GetEquipmentArmor()->GetPrimeStatBuff());
+		PlayerFindSecondaryStatBuff(myEquipment.GetEquipmentArmor()->GetSecondaryStat(), myEquipment.GetEquipmentArmor()->GetSecondaryStatBuff());
+
 	}
+
+	myHp				+= (myStrength * 6) + (myDexterety * 3);
+	myBaseDamage		+= (myStrength * 2) + myDexterety;
+	myCarryingCapacity	+= (myStrength * 2) - myDodge;
+	myAthletics			+= myStrength + myDexterety;
+	mySlightOfHand		+= myDodge + myDexterety;
+	myPersuasion		+= myCharisma + myDodge;
+
+	myMaxHp = myHp;
+	tempHp *= static_cast<float>(myHp);
+	myHp = static_cast<int>(tempHp);
 
 }
 

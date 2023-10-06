@@ -134,13 +134,51 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 			if (i == aPlayerChoiseInMenu)
 			{
 				SetColor(ColorInt::GreenColorText);
-				std::cout << "\t" << ItemTypeToString(aListOfItems[i]->GetItemType()) << "\t <---" << std::endl;
+				std::cout << "\t" << ItemTypeToString(aListOfItems[i]->GetItemType()) << " <---";
+				SetColor(ColorInt::WhiteColorText);
+
+				if (GetConsoleScreenBufferInfo(hConsole, &csbi))
+				{
+					COORD cursorPosition = csbi.dwCursorPosition;
+					x = static_cast<int>(MenuOptions::ItemStatsPrimeStartX);
+					y = cursorPosition.Y;
+					SetCursorPosition(x, y);
+				}
+				std::cout << PrimeStatToString(aListOfItems[i]->GetPrimeStat()) << ": +" << aListOfItems[i]->GetPrimeStatBuff();
+				
+				if (GetConsoleScreenBufferInfo(hConsole, &csbi))
+				{
+					COORD cursorPosition = csbi.dwCursorPosition;
+					x = static_cast<int>(MenuOptions::ItemStatsSecondaryStartX);
+					y = cursorPosition.Y;
+					SetCursorPosition(x, y);
+				}
+				std::cout << SecondaryStatToString(aListOfItems[i]->GetSecondaryStat()) << ": +" <<aListOfItems[i]->GetSecondaryStatBuff() << std::endl;
 			}
 			else
 			{
 
 				SetColor(ColorInt::WhiteColorText);
-				std::cout << ItemTypeToString(aListOfItems[i]->GetItemType()) << std::endl;
+				std::cout << ItemTypeToString(aListOfItems[i]->GetItemType());
+				
+				if (GetConsoleScreenBufferInfo(hConsole, &csbi))
+				{
+					COORD cursorPosition = csbi.dwCursorPosition;
+					x = static_cast<int>(MenuOptions::ItemStatsPrimeStartX);
+					y = cursorPosition.Y;
+					SetCursorPosition(x, y);
+				}
+				std::cout << PrimeStatToString(aListOfItems[i]->GetPrimeStat()) << ": +" << aListOfItems[i]->GetPrimeStatBuff();
+				
+				if (GetConsoleScreenBufferInfo(hConsole, &csbi))
+				{
+					COORD cursorPosition = csbi.dwCursorPosition;
+					x = static_cast<int>(MenuOptions::ItemStatsSecondaryStartX);
+					y = cursorPosition.Y;
+					SetCursorPosition(x, y);
+				}
+				std::cout << SecondaryStatToString(aListOfItems[i]->GetSecondaryStat()) << ": +" << aListOfItems[i]->GetSecondaryStatBuff() << std::endl;
+
 			}
 		}
 
@@ -158,7 +196,7 @@ int showItems(std::vector<std::shared_ptr<Items>> aListOfItems, int& aPlayerChoi
 		if (aPlayerChoiseInMenu == static_cast<int>(aListOfItems.size()))
 		{
 			SetColor(ColorInt::GreenColorText);
-			std::cout << "\tReturn\t <---" << std::endl;
+			std::cout << "\tReturn  <---" << std::endl;
 		}
 		else
 		{

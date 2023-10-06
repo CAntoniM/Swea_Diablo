@@ -2,7 +2,9 @@
 #include <vector>
 #include "UI.h"
 #include <array>
+#include <memory>
 
+class Events;
 class Player;
 class Enemy;
 class Door;
@@ -23,6 +25,7 @@ private:
 	std::vector<Enemy> myEnemyList;
 	std::vector<std::shared_ptr<Items>> myItemList;
 	std::vector<std::shared_ptr<Door>> myConnectingDoors;
+	std::shared_ptr<Events> myEvent;
 	std::string myRoomType;
 	std::string myRoomName;
 	void RoomDescription();

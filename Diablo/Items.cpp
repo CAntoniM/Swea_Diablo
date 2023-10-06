@@ -42,6 +42,7 @@ void Items::SetStats()
 
 		myItemSlot = ItemSlot::Weapon;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
 		break;
@@ -64,6 +65,7 @@ void Items::SetStats()
 
 		myItemSlot = ItemSlot::Weapon;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
 		break;
@@ -87,6 +89,7 @@ void Items::SetStats()
 
 		myItemSlot = ItemSlot::Weapon;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
 		break;
@@ -109,6 +112,7 @@ void Items::SetStats()
 
 		myItemSlot = ItemSlot::Helm;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
 		break;
@@ -132,6 +136,7 @@ void Items::SetStats()
 
 		myItemSlot = ItemSlot::Armor;
 		myPrimeStat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
+		mySecondaryStat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
 		myPrimeStatBuff = RandomNumber(buffDivider, (buffDivider + 2)) * myLevel;
 		mySecondaryStatBuff = RandomNumber(1, buffDivider) * myLevel;
 		break;

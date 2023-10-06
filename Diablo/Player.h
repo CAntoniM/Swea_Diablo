@@ -29,6 +29,7 @@ public:
 	void EquipItem(int aItemChoise);
 	void InventoryManagement();
 	void PlayerFindPrimeStatBuff(PrimeStats aPrimeStat, int aStatBuff);
+	void PlayerFindSecondaryStatBuff(SecondaryStats aSecondaryStat, int aStatBuff);
 
 
 private:
@@ -41,7 +42,7 @@ private:
 	const int myBaseDexterety = static_cast<int>(PlayerBase::PlayerBaseDexterety);
 	const int myBaseDodge = static_cast<int>(PlayerBase::PlayerBaseDodge);
 	const int myBaseCharisma = static_cast<int>(PlayerBase::PlayerBaseCharisma);
-	const int myBaseArmor = 0;
+	const int myBaseArmor = static_cast<int>(PlayerBase::PlayerBaseArmor);
 
 	int myStrength;
 	int myDexterety;

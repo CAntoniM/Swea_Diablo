@@ -77,7 +77,6 @@ void ClearArea(int anX, int anY, int aXLength, int aYLength)
 	}
 
 }
-
 void ClearGame()
 {
 	for (int y = 1; y < static_cast<int>(MenuOptions::ScreenSeperatorY); y++)
@@ -90,7 +89,6 @@ void ClearGame()
 	}
 	std::cout << std::endl;
 }
-
 void ClearMenu()
 {
 	for (int y = static_cast<int>(MenuOptions::ScreenSeperatorY) + 1; y < static_cast<int>(MenuOptions::FrameSizeEndY) - 1; y++)
@@ -102,8 +100,6 @@ void ClearMenu()
 		}
 	}
 }
-
-
 
 void SetColor(ColorInt aColor)
 {
@@ -148,7 +144,6 @@ int DamageAdjustment(int setDamage)
 {
 	 return static_cast<int>(setDamage * RandomFloatNumber(0.8, 1.2) + 0.5);
 }
-
 double RandomFloatNumber(double min, double max)
 {
 	std::random_device rd;
@@ -224,15 +219,6 @@ MenuOptions ButtonPress()
     }
 }
 
-void FlipCursorVisibility(bool aSetCursor)
-{
-	CONSOLE_CURSOR_INFO cursorInfo;
-	cursorInfo.dwSize = 100;
-	cursorInfo.bVisible = aSetCursor;
-
-	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
-}
-
 std::string ItemTypeToString(ItemType aItem)
 {
 	switch (aItem)
@@ -262,3 +248,85 @@ std::string ItemTypeToString(ItemType aItem)
 		break;
 	}
 }
+std::string PrimeStatToString(PrimeStats aPrimeStat)
+{
+	switch (aPrimeStat)
+	{
+	case PrimeStats::Strength:
+		return "Srenght";
+		break;
+
+	case PrimeStats::Dexterety:
+		return "Dexterety";
+		break;
+
+	case PrimeStats::Charisma:
+		return "Charisma";
+		break;
+
+	case PrimeStats::Armor:
+		return "Armor";
+		break;
+
+	default:
+		return "No Stat";
+		break;
+	}
+}
+
+std::string SecondaryStatToString(SecondaryStats aSecondaryStat)
+{
+	switch (aSecondaryStat)
+	{
+	case SecondaryStats::Strength:
+		return "Srenght";
+		break;
+
+	case SecondaryStats::Dexterety:
+		return "Dexterety";
+		break;
+
+	case SecondaryStats::Charisma:
+		return "Charisma";
+		break;
+
+	case SecondaryStats::MaxHp:
+		return "Max Hp";
+		break;
+
+	case SecondaryStats::Damage:
+		return "Damage";
+		break;
+
+	case SecondaryStats::Athletics:
+		return "Athletics";
+		break;
+
+	case SecondaryStats::SlightOfHand:
+		return "Slight of Hand";
+		break;
+
+	case SecondaryStats::Persuasion:
+		return "Persuasion";
+		break;
+
+	case SecondaryStats::Armor:
+		return "Armor";
+		break;
+	default:
+		return "No Stat";
+		break;
+	}
+}
+
+void FlipCursorVisibility(bool aSetCursor)
+{
+	CONSOLE_CURSOR_INFO cursorInfo;
+	cursorInfo.dwSize = 100;
+	cursorInfo.bVisible = aSetCursor;
+
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+}
+
+
+

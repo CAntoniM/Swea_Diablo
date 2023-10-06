@@ -8,6 +8,7 @@ enum class PlayerBase
 	NumberOfPlayerAbilitys	= 3,
 	PlayerBaseArmor			= 1,
 	PlayerLivingState		= true,
+	ResetStats				= 0,
 
 	AthleticsPlayerSkill	= 0,
 	SlightOfHandPlayerSkill = 1,
@@ -30,8 +31,9 @@ enum class RoomBase
 	MinNumberOfEnemis		= 1,
 	
 	MaxNumberOfItemsDropt	= 7,
-	MinNumberOfItemsDropt	= 5
-	,
+	MinNumberOfItemsDropt	= 5,
+
+	ChansOfGettingAEvent	= 1, 
 
 	MenuExplore				= 0,
 	MenuLoot				= 1,
@@ -69,6 +71,8 @@ enum class MenuOptions
 	FrameSizeEndY			= 27,
 	ScreenSeperatorY		= FrameSizeEndY - 10,
 	StatsSeperatorX			= FrameSizeEndX - 30,
+	ItemStatsPrimeStartX	= FrameSizeEndX - 70,
+	ItemStatsSecondaryStartX= ItemStatsPrimeStartX + 17,
 	
 	gameStartY				= FrameSizeStartY + 1,
 	gameStartX				= FrameSizeStartX + 1,
@@ -109,6 +113,7 @@ enum class PrimeStats
 	Dexterety,
 	Charisma,
 	Armor,
+	Hp,
 };
 
 enum class SecondaryStats
@@ -129,4 +134,11 @@ enum class ItemSlot
 	Helm,
 	Armor,
 	Weapon,
+};
+
+enum class EventNames
+{
+	Shrine,
+	Poison,
+	Trap,
 };

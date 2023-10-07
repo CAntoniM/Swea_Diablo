@@ -8,9 +8,9 @@ public:
 	int GetConnectingRoom(int aCurrentRoom);
 	int GetLockDifficultyStr();
 	int GetLockDifficultyDex();
-	bool IsInCurrentRoom(int aCurrentRoom);
+	bool IsCurrentRoom(int aCurrentRoom);
 	bool IsDoorLocked();
-	void isDoorLocked(bool aDoorLockt);
+	void IsDoorLocked(bool aDoorLockt);
 
 
 private:

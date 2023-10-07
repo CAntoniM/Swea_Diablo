@@ -39,7 +39,7 @@ int Door::GetConnectingRoom(int current_room)
 	return -1;
 }
 
-bool Door::IsInCurrentRoom(int _current_room)
+bool Door::IsCurrentRoom(int _current_room)
 {
 	return (_current_room == _connecting_room_one || _current_room == _connecting_room_two);
 }
@@ -49,7 +49,7 @@ bool Door::IsDoorLocked()
 	return _door_lockt;
 }
 
-void Door::isDoorLocked(bool aDoorLockt)
+void Door::IsDoorLocked(bool aDoorLockt)
 {
 	_door_lockt = aDoorLockt;
 }

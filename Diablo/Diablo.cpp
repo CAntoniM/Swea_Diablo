@@ -32,8 +32,8 @@ void AddRoom(int aRoomNumber, std::string aRoomType, std::vector<Room>& aListOfR
 
 int main()
 {
-	SetCursorVisibility(false);
-	DrawFrame();
+	ui::SetCursorVisibility(false);
+	ui::DrawFrame();
 	std::vector<std::shared_ptr<Door>> doors_smart;
 	std::vector<Room> rooms;
 	Player player; 
@@ -55,7 +55,7 @@ int main()
 	*/
 	while (player.IsAlive() && rooms[player.GetCurrentRoom()].LastBossDefeted() == false)
 	{
-		ClearGameView();
+		ui::ClearGameView();
 		rooms[player.GetCurrentRoom()].EnterRoom(player, doors_smart, rooms);
 	}
 	
@@ -64,11 +64,11 @@ int main()
 
 	if (player.GetHP() <= 0)
 	{
-		PrintInMenu("Hell is taking over after your defet!");
+		ui::PrintInMenu("Hell is taking over after your defet!");
 	}
 	else
 	{
-		PrintInMenu("You have defeted Diablo!");
+		ui::PrintInMenu("You have defeted Diablo!");
 	}
 
 }

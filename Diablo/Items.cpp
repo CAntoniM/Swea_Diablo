@@ -20,7 +20,7 @@ void Item::SetStats()
 {
 	std::vector<PrimeStats> randomPrimeStat;
 	std::vector<SecondaryStats> randomSecondaryStats;
-	int buffDivider = RandomNumber(1, 5);
+	int buff_divider = RandomNumber(1, 5);
 	switch (_item_type)
 	{
 	case ItemType::Dagger:
@@ -43,8 +43,8 @@ void Item::SetStats()
 		_item_slot = ItemSlot::Weapon;
 		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
-		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
+		_prime_stat_buff = RandomNumber(buff_divider, (buff_divider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buff_divider) * _level;
 		break;
 	case ItemType::Sword:
 
@@ -66,8 +66,8 @@ void Item::SetStats()
 		_item_slot = ItemSlot::Weapon;
 		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
-		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
+		_prime_stat_buff = RandomNumber(buff_divider, (buff_divider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buff_divider) * _level;
 		break;
 	case ItemType::GreatSword: 
 
@@ -90,8 +90,8 @@ void Item::SetStats()
 		_item_slot = ItemSlot::Weapon;
 		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
-		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
+		_prime_stat_buff = RandomNumber(buff_divider, (buff_divider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buff_divider) * _level;
 		break;
 	case ItemType::Helm:
 
@@ -113,8 +113,8 @@ void Item::SetStats()
 		_item_slot = ItemSlot::Helm;
 		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
-		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
+		_prime_stat_buff = RandomNumber(buff_divider, (buff_divider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buff_divider) * _level;
 		break;
 	case ItemType::Armor:
 
@@ -137,8 +137,8 @@ void Item::SetStats()
 		_item_slot = ItemSlot::Armor;
 		_prime_stat = randomPrimeStat[RandomNumber(0, (static_cast<int>(randomPrimeStat.size()) - 1))];
 		_secondary_stat = randomSecondaryStats[RandomNumber(0, static_cast<int>(randomSecondaryStats.size()) - 1)];
-		_prime_stat_buff = RandomNumber(buffDivider, (buffDivider + 2)) * _level;
-		_secondary_stat_buff = RandomNumber(1, buffDivider) * _level;
+		_prime_stat_buff = RandomNumber(buff_divider, (buff_divider + 2)) * _level;
+		_secondary_stat_buff = RandomNumber(1, buff_divider) * _level;
 		break;
 	default:
 		break;

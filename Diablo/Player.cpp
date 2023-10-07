@@ -31,29 +31,29 @@ Player::Player()
 	myCurrentRoom		= 0;
 }
 
-void Player::ChangeRoom(int aNewRoom)
+void Player::ChangeRoom(int new_room)
 {
-	myCurrentRoom = aNewRoom;
+	myCurrentRoom = new_room;
 }
 
-void Player::FindPrimeStatBuff(PrimeStats aPrimeStat, int aStatBuff)
+void Player::FindPrimeStatBuff(PrimeStats prime_stat, int stat_buff)
 {
-	switch (aPrimeStat)
+	switch (prime_stat)
 	{
 	case PrimeStats::Strength:
-		_strength += aStatBuff;
+		_strength += stat_buff;
 		break;
 
 	case PrimeStats::Dexterety:
-		_dexterety += aStatBuff;
+		_dexterety += stat_buff;
 		break;
 
 	case PrimeStats::Charisma:
-		_charisma += aStatBuff;
+		_charisma += stat_buff;
 		break;
 
 	case PrimeStats::Armor:
-		_armor += aStatBuff;
+		_armor += stat_buff;
 		break;
 
 	default:
@@ -159,54 +159,54 @@ void Player::ShowStats()
 {
 	UppdateStats();
 	int row = 1;
-	ClearArea(static_cast<int>(MenuOptions::StatsSeperatorX) + 1,
+	ui::ClearArea(static_cast<int>(MenuOptions::StatsSeperatorX) + 1,
 		static_cast<int>(MenuOptions::ScreenSeperatorY) + 1, 
 		static_cast<int>(MenuOptions::FrameSizeEndX) - static_cast<int>(MenuOptions::StatsSeperatorX) - 2,
 		static_cast<int>(MenuOptions::FrameSizeEndY) - static_cast<int>(MenuOptions::ScreenSeperatorY) - 2);
-	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-	Print("HP: " + std::to_string(_hp) + "/" + std::to_string(_max_hp));
+	ui::SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+	ui::Print("HP: " + std::to_string(_hp) + "/" + std::to_string(_max_hp));
 	row += 2;
 
-	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-	Print("STR: \t" + std::to_string(_strength) + "\tCHA: \t" + std::to_string(_charisma));
+	ui::SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+	ui::Print("STR: \t" + std::to_string(_strength) + "\tCHA: \t" + std::to_string(_charisma));
 	row++;
-	SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-	Print("DEX: \t" + std::to_string(_dexterety) + "\tDodge: \t" + std::to_string(_dodge));
+	ui::SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+	ui::Print("DEX: \t" + std::to_string(_dexterety) + "\tDodge: \t" + std::to_string(_dodge));
 	row += 2;
 
 	if (_equipment.GetEquipmentWeapon() != nullptr)
 	{
-		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-		Print("Weapon: \t" + toString(_equipment.GetEquipmentWeapon()->GetItemType()));
+		ui::SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		ui::Print("Weapon: \t" + toString(_equipment.GetEquipmentWeapon()->GetItemType()));
 	}
 	else
 	{
-		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-		Print("Weapon: \t No Weapon");
+		ui::SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		ui::Print("Weapon: \t No Weapon");
 	}
 	row++;
 
 	if (_equipment.GetEquipmentHelm() != nullptr)
 	{
-		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-		Print("Helm: \t" + toString(_equipment.GetEquipmentHelm()->GetItemType()));
+		ui::SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		ui::Print("Helm: \t" + toString(_equipment.GetEquipmentHelm()->GetItemType()));
 	}
 	else
 	{
-		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-		Print("Helm: \t No Helm");
+		ui::SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		ui::Print("Helm: \t No Helm");
 	}
 	row++;
 
 	if (_equipment.GetEquipmentArmor() != nullptr)
 	{
-		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-		Print("Armor: \t" + toString(_equipment.GetEquipmentArmor()->GetItemType()));
+		ui::SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		ui::Print("Armor: \t" + toString(_equipment.GetEquipmentArmor()->GetItemType()));
 	}
 	else
 	{
-		SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
-		Print("Armor: \t No Armor");
+		ui::SetCursorPosition(static_cast<int>(MenuOptions::StatsSeperatorX) + 1, static_cast<int>(MenuOptions::ScreenSeperatorY) + row);
+		ui::Print("Armor: \t No Armor");
 	}
 }
 
@@ -251,7 +251,7 @@ int Player::GetCurrentRoom()
 int Player::GetNormalAttack()
 {
 	int damage = DamageAdjustment(_base_damage);
-	PrintInMenu("You deal: " + std::to_string(damage) + " damage!");
+	ui::PrintInMenu("You deal: " + std::to_string(damage) + " damage!");
 	return damage;
 }
 
@@ -276,23 +276,23 @@ std::vector<std::shared_ptr<Item>> Player::GetInventory()
 	return _inventory;
 }
 
-void Player::EquipItem(int _item_choise)
+void Player::EquipItem(int item_choise)
 {
-	switch (_inventory[_item_choise]->GetItemSlot())
+	switch (_inventory[item_choise]->GetItemSlot())
 		{
 		case ItemSlot::Weapon: 
 		{
-			_equipment.SetEquipentWeapon(_inventory[_item_choise]);
+			_equipment.SetEquipentWeapon(_inventory[item_choise]);
 			break;
 		}
 		case ItemSlot::Helm:
 		{
-			_equipment.SetEquipentHelm(_inventory[_item_choise]);
+			_equipment.SetEquipentHelm(_inventory[item_choise]);
 			break;
 		}
 		case ItemSlot::Armor:
 		{
-			_equipment.SetEquipentArmor(_inventory[_item_choise]);
+			_equipment.SetEquipentArmor(_inventory[item_choise]);
 			break;
 		}
 		break;
@@ -305,7 +305,7 @@ void Player::InventoryManagement()
 	while (true)
 	{
 		ShowStats();
-		int player_try_pick_up = showItems(GetInventory(), player_choise_in_menu);
+		int player_try_pick_up = ui::showItems(GetInventory(), player_choise_in_menu);
 		if (player_try_pick_up >= GetInventory().size())
 		{
 			return;
